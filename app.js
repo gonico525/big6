@@ -7,11 +7,19 @@ import * as L from './logic.js';
 import {
   audio,
   wakeLock,
+  createCountdown,
   createRepCounter,
   createHoldCounter,
   createRestTimer,
   formatClock,
 } from './timer.js';
+
+// ────────────────────────────────────────────────────────────
+// 定数
+// ────────────────────────────────────────────────────────────
+
+/** 「スタート」を押してからカウントが始まるまでの秒数（構える時間） */
+const COUNTDOWN_SEC = 6;
 
 // ────────────────────────────────────────────────────────────
 // 状態
@@ -77,7 +85,7 @@ async function boot() {
     save();
   }
   audio.configure(data.settings.sound);
-  wakeLock.bindVisibility(() => !!run && (run.counter?.running || run.rest?.running));
+  wakeLock.bindVisibility(() => !!run && (run.countdown?.running || run.counter?.running || run.rest?.running));
   render();
 }
 
@@ -271,6 +279,7 @@ function baseRun(s) {
     partial: null,
     side: 0,
     phase: 'idle',
+    countdown: null,
     counter: null,
     rest: null,
     confirmValue: 0,
@@ -279,10 +288,18 @@ function baseRun(s) {
 }
 
 function stopRun() {
+  run?.countdown?.stop();
   run?.counter?.stop();
   run?.rest?.stop();
   wakeLock.release();
   run = null;
+}
+
+/** セットを確定したあと・休憩から戻ったあとに表示する画面 */
+function phaseAfterSet(r) {
+  // 片側種目で左だけ終えている間は、まだそのセットの途中
+  if (r.partial != null) return 'idle';
+  return r.sets.length >= (r.target.sets ?? 1) ? 'done' : 'idle';
 }
 
 function renderRun() {
@@ -290,14 +307,14 @@ function renderRun() {
   if (!r) return renderHome();
   const u = L.unitLabel(r.unit);
 
-  const body =
-    r.phase === 'counting'
-      ? runCounting(r)
-      : r.phase === 'confirm'
-        ? runConfirm(r, u)
-        : r.phase === 'rest'
-          ? runRest(r)
-          : runIdle(r, u);
+  const bodies = {
+    countdown: () => runCountdown(r),
+    counting: () => runCounting(r),
+    confirm: () => runConfirm(r, u),
+    rest: () => runRest(r),
+    done: () => runDone(r, u),
+  };
+  const body = (bodies[r.phase] ?? (() => runIdle(r, u)))();
 
   return `
   ${topbar(r.name, `<button class="btn ghost small" data-act="abort">中断</button>`)}
@@ -326,20 +343,32 @@ function renderRun() {
   `;
 }
 
+/** 「3セット目（左）」のような、これから行うセットの呼び名 */
+function setLabel(r) {
+  const sideLabel = r.perSide ? (r.side === 0 ? '左' : '右') : '';
+  return `${r.sets.length + 1}セット目${sideLabel ? `（${sideLabel}）` : ''}`;
+}
+
 function runIdle(r, u) {
   const doneSets = r.sets.length;
   const enough = doneSets >= (r.target.sets ?? 1);
-  const sideLabel = r.perSide ? (r.side === 0 ? '左' : '右') : '';
-  const label =
-    r.mode === 'free'
-      ? `${doneSets + 1}セット目${sideLabel ? `（${sideLabel}）` : ''} を入力`
-      : `${doneSets + 1}セット目${sideLabel ? `（${sideLabel}）` : ''} スタート`;
+  const label = r.mode === 'free' ? `${setLabel(r)} を入力` : `${setLabel(r)} スタート`;
 
   return `
   <div class="stack">
     <button class="btn big block primary" data-act="start">${esc(label)}</button>
     ${doneSets || r.partial != null ? `<button class="btn block" data-act="rest">休憩する</button>` : ''}
     ${doneSets ? `<button class="btn block ${enough ? 'accent' : ''}" data-act="finish">ワークアウトを終了して記録</button>` : ''}
+  </div>`;
+}
+
+function runCountdown(r) {
+  return `
+  <div class="card">
+    <div class="muted" style="text-align:center">${esc(setLabel(r))}　まもなく開始</div>
+    <div class="countdown" id="countdown-value">${COUNTDOWN_SEC}</div>
+    <div class="small muted" style="text-align:center">開始の姿勢で構えてください</div>
+    <button class="btn big block" data-act="countdown-cancel" style="margin-top:16px">やめる</button>
   </div>`;
 }
 
@@ -384,8 +413,23 @@ function runRest(r) {
   </div>`;
 }
 
+function runDone(r, u) {
+  return `
+  <div class="card">
+    <div class="run-target">目標のセット数が終わりました</div>
+    <div class="run-tempo">実績　${esc(L.setsText(r.sets, r.perSide))} ${esc(u)}</div>
+  </div>
+  <div class="stack">
+    <button class="btn big block primary" data-act="finish">記録する</button>
+    <button class="btn block" data-act="add-set">もう1セット追加</button>
+    <button class="btn block" data-act="rest">休憩する</button>
+  </div>`;
+}
+
 function setList(r, u) {
-  const total = Math.max(r.target.sets ?? 1, r.sets.length + 1);
+  // 完了画面では次のセットの行は出さない（もう終わっているため）
+  const upto = r.phase === 'done' ? r.sets.length : r.sets.length + 1;
+  const total = Math.max(r.target.sets ?? 1, upto);
   const items = [];
   for (let i = 0; i < total; i++) {
     const v = r.sets[i];
@@ -401,8 +445,37 @@ function setList(r, u) {
 function afterRunRender() {
   const r = run;
   if (!r) return;
+  if (r.phase === 'countdown' && !r.countdown) startCountdown();
   if (r.phase === 'counting' && !r.counter) startCounter();
   if (r.phase === 'rest' && !r.rest) startRest();
+}
+
+function startCountdown() {
+  const r = run;
+  const el = $('#countdown-value');
+  r.countdown = createCountdown({
+    seconds: COUNTDOWN_SEC,
+    onTick: (remain) => {
+      if (el) el.textContent = String(remain);
+    },
+    onDone: () => {
+      // 描画のあと afterRunRender からテンポカウントが始まる
+      r.countdown = null;
+      r.phase = 'counting';
+      render();
+    },
+  });
+  r.countdown.start();
+}
+
+/** 目標に達したので、カウントを止めて確認画面へ進む（タイマー側で 1 度だけ呼ばれる） */
+function goalReached() {
+  const r = run;
+  if (!r || r.phase !== 'counting') return;
+  r.counter = null;
+  r.confirmValue = r.target.value ?? 0;
+  r.phase = 'confirm';
+  render();
 }
 
 function startCounter() {
@@ -420,8 +493,9 @@ function startCounter() {
 
   if (r.mode === 'hold') {
     r.counter = createHoldCounter({
-      targetSec: r.target.value || 1,
+      targetSec: r.target.value || 0,
       onUpdate: ({ elapsed, progress }) => paint(progress, Math.floor(elapsed), '保持'),
+      onReach: goalReached,
     });
   } else {
     const phases = L.phaseSequence(r.startPhase, data.settings.tempo);
@@ -434,7 +508,9 @@ function startCounter() {
     }
     r.counter = createRepCounter({
       phases,
+      targetReps: r.target.value || 0,
       onUpdate: ({ reps, progress, phase }) => paint(progress, reps, phase.label),
+      onReach: goalReached,
     });
   }
   r.counter.start();
@@ -477,7 +553,7 @@ function commitValue(value) {
     r.sets.push(value);
   }
   savePending();
-  r.phase = 'idle';
+  r.phase = phaseAfterSet(r);
   render();
 }
 
@@ -555,6 +631,7 @@ function renderProgress() {
       <span><i style="background:var(--accent)"></i>昇格可能</span>
       <span><i style="border-width:2px;border-color:var(--text)"></i>現在のステップ</span>
     </div>
+    <div class="grid-hint small muted">マスをタップすると、そのステップの記録が下に出ます</div>
   </div>
   <div class="row" style="margin-bottom:12px">
     <button class="btn small" data-act="add-record">記録を追加</button>
@@ -977,13 +1054,22 @@ const actions = {
       run.confirmValue = run.target.value ?? 0;
       run.phase = 'confirm';
     } else {
-      run.phase = 'counting';
+      // 構える時間を作るため、カウントの前に秒読みを挟む
+      run.phase = 'countdown';
     }
+    render();
+  },
+  'countdown-cancel': () => {
+    run.countdown?.stop();
+    run.countdown = null;
+    run.phase = 'idle';
     render();
   },
   stop: () => {
     const r = run;
-    r.confirmValue = r.mode === 'hold' ? r.counter.seconds() : r.counter.reps();
+    // 最後のレップを終えて一息ついてから押すまでにテンポが 1 レップ進んでしまうため、
+    // 手動で終えたときだけ 1 を引く（目標到達による自動終了ではちょうどで止まるので引かない）
+    r.confirmValue = r.mode === 'hold' ? r.counter.seconds() : Math.max(0, r.counter.reps() - 1);
     r.counter.stop();
     r.counter = null;
     r.phase = 'confirm';
@@ -1008,6 +1094,10 @@ const actions = {
   'rest-end': () => {
     run.rest?.stop();
     run.rest = null;
+    run.phase = phaseAfterSet(run);
+    render();
+  },
+  'add-set': () => {
     run.phase = 'idle';
     render();
   },

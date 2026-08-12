@@ -275,9 +275,9 @@ test('0 秒のフェーズは再生順から除かれる', () => {
 // ────────────────────────────────────────────────────────────
 
 test('目標の表示は片側種目を明示する', () => {
-  assert.equal(L.targetText({ sets: 2, value: 15 }, 'reps', false), '2セット × 15回');
-  assert.equal(L.targetText({ sets: 2, value: 10 }, 'reps', true), '2セット × 左右各10回');
-  assert.equal(L.targetText({ sets: 1, value: 60 }, 'sec', false), '1セット × 60秒');
+  assert.equal(L.targetText({ sets: 2, value: 15 }, 'reps', false), '15回 × 2セット');
+  assert.equal(L.targetText({ sets: 2, value: 10 }, 'reps', true), '左右各10回 × 2セット');
+  assert.equal(L.targetText({ sets: 1, value: 60 }, 'sec', false), '60秒 × 1セット');
 });
 
 test('実績の表示は片側種目を (左/右) にする', () => {
