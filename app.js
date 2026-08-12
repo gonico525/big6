@@ -751,6 +751,7 @@ function renderSettings() {
   </div></details>
 
   <details class="group"><summary>データ</summary><div class="body stack">
+    <button class="btn block" data-act="reload-template">ステップマスタをテンプレートから読み込む</button>
     <button class="btn block" data-act="export">JSON をエクスポート</button>
     <button class="btn block" data-act="import">JSON をインポート</button>
     <input type="file" id="import-file" accept="application/json,.json" hidden>
@@ -1019,6 +1020,20 @@ const actions = {
     audio.unlock();
     audio.repStart();
     setTimeout(() => audio.tick(), 400);
+  },
+  'reload-template': async () => {
+    if (!confirm('ステップマスタ（ステップ名・基準値・単位・カウント方式・片側種目・開始フェーズ）を standards.json の内容で上書きします。実施記録と設定は残ります。よろしいですか？')) return;
+    try {
+      const template = await fetch('./standards.json', { cache: 'no-cache' }).then((r) => r.json());
+      const fresh = createInitialData(template);
+      data.exercises = fresh.exercises;
+      data.steps = fresh.steps;
+      save();
+      alert('ステップマスタを読み込みました');
+      go('home');
+    } catch (e) {
+      alert(`読み込みに失敗しました: ${e.message}`);
+    }
   },
   export: () => exportJson(),
   import: () => $('#import-file').click(),

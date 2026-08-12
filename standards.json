@@ -1,8 +1,7 @@
 {
   "_comment": [
     "ステップマスタの初期テンプレート。実際の値は保存領域（store）に持つ。",
-    "levels の基準値は書籍を参照して利用者が入力する（アプリには同梱しない）。",
-    "unit / mode / perSide は既定値。設定画面から種目・ステップごとに修正できる。"
+    "設定画面から種目・ステップごとに修正できる。"
   ],
   "exercises": [
     {
@@ -51,16 +50,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 50
           }
         }
       },
@@ -71,16 +70,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 40
           }
         }
       },
@@ -91,16 +90,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 30
           }
         }
       },
@@ -111,16 +110,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 12
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           }
         }
       },
@@ -131,16 +130,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -151,16 +150,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -168,19 +167,19 @@
         "name": "アンイーブン・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -188,19 +187,19 @@
         "name": "ハーフ・ワンアーム・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 20
           }
         }
       },
@@ -208,19 +207,19 @@
         "name": "レバー・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -228,41 +227,41 @@
         "name": "ワンアーム・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 100
           }
         }
       }
     },
     "squat": {
       "1": {
-        "name": "ショルダースタンド・スクワット",
+        "name": "ショルダー・スタンド・スクワット",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 50
           }
         }
       },
@@ -273,36 +272,36 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 40
           }
         }
       },
       "3": {
-        "name": "サポーティド・スクワット",
+        "name": "サポーティッド・スクワット",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 30
           }
         }
       },
@@ -313,16 +312,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 35
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 50
           }
         }
       },
@@ -333,16 +332,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 30
           }
         }
       },
@@ -353,16 +352,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -370,19 +369,19 @@
         "name": "アンイーブン・スクワット",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -390,19 +389,19 @@
         "name": "ハーフ・ワンレッグ・スクワット",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -410,19 +409,19 @@
         "name": "アシステッド・ワンレッグ・スクワット",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -430,19 +429,19 @@
         "name": "ワンレッグ・スクワット",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 50
           }
         }
       }
@@ -455,16 +454,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 40
           }
         }
       },
@@ -475,16 +474,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 30
           }
         }
       },
@@ -495,16 +494,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 20
           }
         }
       },
@@ -515,16 +514,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 11
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
@@ -535,16 +534,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           }
         }
       },
@@ -555,16 +554,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           }
         }
       },
@@ -572,19 +571,19 @@
         "name": "アンイーブン・プルアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 7
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 9
           }
         }
       },
@@ -592,19 +591,19 @@
         "name": "ハーフ・ワンアーム・プルアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 4
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           }
         }
       },
@@ -612,19 +611,19 @@
         "name": "アシステッド・ワンアーム・プルアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 3
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 5
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 7
           }
         }
       },
@@ -632,19 +631,19 @@
         "name": "ワンアーム・プルアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 1
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 3
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           }
         }
       }
@@ -657,16 +656,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 40
           }
         }
       },
@@ -677,36 +676,36 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 35
           }
         }
       },
       "3": {
-        "name": "フラット・ベント・レッグレイズ",
+        "name": "フラット・ベントレッグ・レイズ",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 30
           }
         }
       },
@@ -717,36 +716,36 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 25
           }
         }
       },
       "5": {
-        "name": "フラット・ストレート・レッグレイズ",
+        "name": "フラット・ストレートレッグ・レイズ",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -757,36 +756,36 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
       "7": {
-        "name": "ハンギング・ベント・レッグレイズ",
+        "name": "ハンギング・ベントレッグ・レイズ",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
@@ -797,56 +796,56 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
       "9": {
-        "name": "パーシャル・ストレート・レッグレイズ",
+        "name": "パーシャル・ストレートレッグ・レイズ",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
       "10": {
-        "name": "ハンギング・ストレート・レッグレイズ",
+        "name": "ハンギング・ストレートレッグ・レイズ",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 30
           }
         }
       }
@@ -859,16 +858,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 50
           }
         }
       },
@@ -879,16 +878,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 40
           }
         }
       },
@@ -899,16 +898,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 3,
+            "value": 30
           }
         }
       },
@@ -919,16 +918,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 25
           }
         }
       },
@@ -939,16 +938,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 8
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -959,56 +958,56 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 6
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
       "7": {
-        "name": "ウォールウォーキング（下向き）",
+        "name": "ウォール・ウォーキング（ダウン）",
         "unit": "reps",
-        "mode": "rep",
+        "mode": "free",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 3
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           }
         }
       },
       "8": {
-        "name": "ウォールウォーキング（上向き）",
+        "name": "ウォール・ウォーキング（アップ）",
         "unit": "reps",
-        "mode": "rep",
+        "mode": "free",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 2
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 4
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           }
         }
       },
@@ -1019,16 +1018,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 1
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 3
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           }
         }
       },
@@ -1039,16 +1038,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 1
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 3
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 30
           }
         }
       }
@@ -1056,61 +1055,61 @@
     "handstand": {
       "1": {
         "name": "ウォール・ヘッドスタンド",
-        "unit": "reps",
-        "mode": "rep",
+        "unit": "sec",
+        "mode": "hold",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 30
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 60
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 120
           }
         }
       },
       "2": {
         "name": "クロウ・スタンド",
-        "unit": "reps",
-        "mode": "rep",
+        "unit": "sec",
+        "mode": "hold",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 10
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 30
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 60
           }
         }
       },
       "3": {
         "name": "ウォール・ハンドスタンド",
-        "unit": "reps",
-        "mode": "rep",
+        "unit": "sec",
+        "mode": "hold",
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 30
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 60
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 120
           }
         }
       },
@@ -1121,16 +1120,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 20
           }
         }
       },
@@ -1141,16 +1140,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 15
           }
         }
       },
@@ -1161,16 +1160,16 @@
         "perSide": false,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 9
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 12
           }
         }
       },
@@ -1178,19 +1177,19 @@
         "name": "アンイーブン・ハンドスタンド・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 10
           }
         }
       },
@@ -1198,19 +1197,19 @@
         "name": "ハーフ・ワンアーム・ハンドスタンド・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 4
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 8
           }
         }
       },
@@ -1218,19 +1217,19 @@
         "name": "レバー・ハンドスタンド・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 3
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 4
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 6
           }
         }
       },
@@ -1238,19 +1237,19 @@
         "name": "ワンアーム・ハンドスタンド・プッシュアップ",
         "unit": "reps",
         "mode": "rep",
-        "perSide": false,
+        "perSide": true,
         "levels": {
           "1": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 1
           },
           "2": {
-            "sets": null,
-            "value": null
+            "sets": 2,
+            "value": 2
           },
           "3": {
-            "sets": null,
-            "value": null
+            "sets": 1,
+            "value": 5
           }
         }
       }
