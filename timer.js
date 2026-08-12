@@ -109,6 +109,12 @@ export const audio = {
   rest() {
     this.beep({ freq: 660, duration: 0.08 });
   },
+
+  /** 目標に達した合図（高め・長めを 2 連。刻みやレップの先頭と区別する） */
+  goal() {
+    this.beep({ freq: 1320, duration: 0.18 });
+    setTimeout(() => this.beep({ freq: 1320, duration: 0.18 }), 230);
+  },
 };
 
 // ────────────────────────────────────────────────────────────
@@ -148,6 +154,54 @@ export const wakeLock = {
 };
 
 // ────────────────────────────────────────────────────────────
+// 開始前のカウントダウン
+// ────────────────────────────────────────────────────────────
+
+/**
+ * テンポカウントを始める前の秒読み。
+ * - 残り秒（seconds - 経過秒）を毎フレーム onTick に渡す
+ * - 毎秒ビープ、0 になったら自身を止めて onDone を呼ぶ（そこでレップの先頭の音）
+ * - 画面はそのままカウントへ移るため、終了時に Wake Lock は手放さない
+ */
+export function createCountdown({ seconds, onTick, onDone }) {
+  let done = false;
+
+  const timer = createTimer({
+    onTick(elapsed) {
+      if (done) return;
+      onTick?.(Math.max(0, seconds - Math.floor(elapsed)), elapsed);
+      if (elapsed >= seconds) {
+        done = true;
+        timer.stop();
+        audio.repStart();
+        onDone?.();
+      }
+    },
+    onSecond(sec) {
+      if (sec < seconds) audio.tick();
+    },
+  });
+
+  return {
+    start() {
+      audio.unlock();
+      done = false;
+      timer.start();
+      wakeLock.acquire();
+    },
+    stop() {
+      // 途中でやめたときは onDone を呼ばない
+      done = true;
+      timer.stop();
+      wakeLock.release();
+    },
+    get running() {
+      return timer.running;
+    },
+  };
+}
+
+// ────────────────────────────────────────────────────────────
 // テンポカウント
 // ────────────────────────────────────────────────────────────
 
@@ -155,11 +209,12 @@ export const wakeLock = {
  * テンポカウントを回す。
  * - 毎秒ビープ、レップの先頭のみ別の音
  * - カウントはレップの最終フェーズを完了した時点で +1（進行中は数えない）
- * - 目標到達で自動停止しない（超過分も記録するため）
+ * - targetReps に達したら自動で停止し、onReach を 1 度だけ呼ぶ
  */
-export function createRepCounter({ phases, onUpdate }) {
+export function createRepCounter({ phases, targetReps = 0, onUpdate, onReach }) {
   const cycle = phases.reduce((a, p) => a + p.sec, 0);
   let timer = null;
+  let reached = false; // 到達の通知は 1 度だけ（onTick は毎フレーム走るため）
 
   function phaseAt(elapsed) {
     let t = cycle > 0 ? elapsed % cycle : 0;
@@ -170,13 +225,28 @@ export function createRepCounter({ phases, onUpdate }) {
     return phases[phases.length - 1];
   }
 
+  /** 目標に達する瞬間（= 次のレップの先頭）以降は刻まない */
+  const overTarget = (sec) => targetReps > 0 && cycle > 0 && sec >= cycle * targetReps;
+
+  function stop() {
+    timer.stop();
+    wakeLock.release();
+  }
+
   timer = createTimer({
     onTick(elapsed) {
       const reps = cycle > 0 ? Math.floor(elapsed / cycle) : 0;
       const progress = cycle > 0 ? (elapsed % cycle) / cycle : 0;
       onUpdate({ reps, progress, phase: phaseAt(elapsed), elapsed });
+      if (!reached && targetReps > 0 && reps >= targetReps) {
+        reached = true;
+        stop();
+        audio.goal();
+        onReach?.(targetReps);
+      }
     },
     onSecond(sec) {
+      if (overTarget(sec)) return;
       if (sec === 0) {
         audio.repStart();
         return;
@@ -193,10 +263,7 @@ export function createRepCounter({ phases, onUpdate }) {
       timer.start();
       wakeLock.acquire();
     },
-    stop() {
-      timer.stop();
-      wakeLock.release();
-    },
+    stop,
     get running() {
       return timer.running;
     },
@@ -208,15 +275,30 @@ export function createRepCounter({ phases, onUpdate }) {
 
 /**
  * 保持のカウント（mode: hold）。
- * リングは目標秒数で一周する。自動停止はしない。
+ * リングは目標秒数で一周し、targetSec に達したら自動で停止して onReach を 1 度だけ呼ぶ。
+ * targetSec が 0（目標なし）のときは一周も自動停止もしない。
  */
-export function createHoldCounter({ targetSec, onUpdate }) {
+export function createHoldCounter({ targetSec, onUpdate, onReach }) {
+  let reached = false; // 到達の通知は 1 度だけ
+
+  function stop() {
+    timer.stop();
+    wakeLock.release();
+  }
+
   const timer = createTimer({
     onTick(elapsed) {
       const progress = targetSec > 0 ? Math.min(1, elapsed / targetSec) : 0;
       onUpdate({ elapsed, progress });
+      if (!reached && targetSec > 0 && elapsed >= targetSec) {
+        reached = true;
+        stop();
+        audio.goal();
+        onReach?.(targetSec);
+      }
     },
     onSecond(sec) {
+      if (targetSec > 0 && sec >= targetSec) return; // 到達音に譲る
       if (sec === 0) audio.repStart();
       else audio.tick();
     },
@@ -227,10 +309,7 @@ export function createHoldCounter({ targetSec, onUpdate }) {
       timer.start();
       wakeLock.acquire();
     },
-    stop() {
-      timer.stop();
-      wakeLock.release();
-    },
+    stop,
     get running() {
       return timer.running;
     },

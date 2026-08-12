@@ -270,6 +270,7 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 .stepper .btn { width: 56px; height: 56px; border-radius: 50%; font-size: 26px; }
 
 .rest-clock { text-align: center; font-size: 52px; font-weight: 700; font-variant-numeric: tabular-nums; padding: 12px 0; }
+.countdown { text-align: center; font-size: 76px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; padding: 10px 0 6px; }
 
 /* ── 進捗グリッド ─────────────────────── */
 .grid-table { display: grid; grid-template-columns: 5.5em repeat(10, 1fr); gap: 4px; align-items: center; }
