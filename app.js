@@ -631,6 +631,7 @@ function renderProgress() {
       <span><i style="background:var(--accent)"></i>昇格可能</span>
       <span><i style="border-width:2px;border-color:var(--text)"></i>現在のステップ</span>
     </div>
+    <div class="grid-hint small muted">マスをタップすると、そのステップの記録が下に出ます</div>
   </div>
   <div class="row" style="margin-bottom:12px">
     <button class="btn small" data-act="add-record">記録を追加</button>
