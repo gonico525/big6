@@ -1,7 +1,8 @@
 {
   "_comment": [
     "ステップマスタの初期テンプレート。実際の値は保存領域（store）に持つ。",
-    "設定画面から種目・ステップごとに修正できる。"
+    "設定画面から種目・ステップごとに修正できる。",
+    "description は実行画面のツールチップに出す説明。任意入力。"
   ],
   "exercises": [
     {
@@ -45,6 +46,7 @@
     "pushup": {
       "1": {
         "name": "ウォール・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -65,6 +67,7 @@
       },
       "2": {
         "name": "インクライン・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -85,6 +88,7 @@
       },
       "3": {
         "name": "ニーリング・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -105,6 +109,7 @@
       },
       "4": {
         "name": "ハーフ・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -125,6 +130,7 @@
       },
       "5": {
         "name": "フル・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -145,6 +151,7 @@
       },
       "6": {
         "name": "クローズ・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -165,6 +172,7 @@
       },
       "7": {
         "name": "アンイーブン・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -185,6 +193,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -205,6 +214,7 @@
       },
       "9": {
         "name": "レバー・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -225,6 +235,7 @@
       },
       "10": {
         "name": "ワンアーム・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -247,6 +258,7 @@
     "squat": {
       "1": {
         "name": "ショルダー・スタンド・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -267,6 +279,7 @@
       },
       "2": {
         "name": "ジャックナイフ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -287,6 +300,7 @@
       },
       "3": {
         "name": "サポーティッド・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -307,6 +321,7 @@
       },
       "4": {
         "name": "ハーフ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -327,6 +342,7 @@
       },
       "5": {
         "name": "フル・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -347,6 +363,7 @@
       },
       "6": {
         "name": "クローズ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -367,6 +384,7 @@
       },
       "7": {
         "name": "アンイーブン・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -387,6 +405,7 @@
       },
       "8": {
         "name": "ハーフ・ワンレッグ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -407,6 +426,7 @@
       },
       "9": {
         "name": "アシステッド・ワンレッグ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -427,6 +447,7 @@
       },
       "10": {
         "name": "ワンレッグ・スクワット",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -449,6 +470,7 @@
     "pullup": {
       "1": {
         "name": "ヴァーチカル・プル",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -469,6 +491,7 @@
       },
       "2": {
         "name": "ホリゾンタル・プル",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -489,6 +512,7 @@
       },
       "3": {
         "name": "ジャックナイフ・プル",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -509,6 +533,7 @@
       },
       "4": {
         "name": "ハーフ・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -529,6 +554,7 @@
       },
       "5": {
         "name": "フル・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -549,6 +575,7 @@
       },
       "6": {
         "name": "クローズ・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -569,6 +596,7 @@
       },
       "7": {
         "name": "アンイーブン・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -589,6 +617,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -609,6 +638,7 @@
       },
       "9": {
         "name": "アシステッド・ワンアーム・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -629,6 +659,7 @@
       },
       "10": {
         "name": "ワンアーム・プルアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -651,6 +682,7 @@
     "legraise": {
       "1": {
         "name": "ニー・タック",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -671,6 +703,7 @@
       },
       "2": {
         "name": "フラット・ニー・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -691,6 +724,7 @@
       },
       "3": {
         "name": "フラット・ベントレッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -711,6 +745,7 @@
       },
       "4": {
         "name": "フラット・フロッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -731,6 +766,7 @@
       },
       "5": {
         "name": "フラット・ストレートレッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -751,6 +787,7 @@
       },
       "6": {
         "name": "ハンギング・ニー・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -771,6 +808,7 @@
       },
       "7": {
         "name": "ハンギング・ベントレッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -791,6 +829,7 @@
       },
       "8": {
         "name": "ハンギング・フロッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -811,6 +850,7 @@
       },
       "9": {
         "name": "パーシャル・ストレートレッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -831,6 +871,7 @@
       },
       "10": {
         "name": "ハンギング・ストレートレッグ・レイズ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -853,6 +894,7 @@
     "bridge": {
       "1": {
         "name": "ショート・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -873,6 +915,7 @@
       },
       "2": {
         "name": "ストレート・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -893,6 +936,7 @@
       },
       "3": {
         "name": "アングルド・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -913,6 +957,7 @@
       },
       "4": {
         "name": "ヘッド・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -933,6 +978,7 @@
       },
       "5": {
         "name": "ハーフ・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -953,6 +999,7 @@
       },
       "6": {
         "name": "フル・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -973,6 +1020,7 @@
       },
       "7": {
         "name": "ウォール・ウォーキング（ダウン）",
+        "description": "",
         "unit": "reps",
         "mode": "free",
         "perSide": false,
@@ -993,6 +1041,7 @@
       },
       "8": {
         "name": "ウォール・ウォーキング（アップ）",
+        "description": "",
         "unit": "reps",
         "mode": "free",
         "perSide": false,
@@ -1013,6 +1062,7 @@
       },
       "9": {
         "name": "クロージング・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1033,6 +1083,7 @@
       },
       "10": {
         "name": "スタンド・トゥ・スタンド・ブリッジ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1055,6 +1106,7 @@
     "handstand": {
       "1": {
         "name": "ウォール・ヘッドスタンド",
+        "description": "",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1075,6 +1127,7 @@
       },
       "2": {
         "name": "クロウ・スタンド",
+        "description": "",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1095,6 +1148,7 @@
       },
       "3": {
         "name": "ウォール・ハンドスタンド",
+        "description": "",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1115,6 +1169,7 @@
       },
       "4": {
         "name": "ハーフ・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1135,6 +1190,7 @@
       },
       "5": {
         "name": "ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1155,6 +1211,7 @@
       },
       "6": {
         "name": "クローズ・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1175,6 +1232,7 @@
       },
       "7": {
         "name": "アンイーブン・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1195,6 +1253,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1215,6 +1274,7 @@
       },
       "9": {
         "name": "レバー・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1235,6 +1295,7 @@
       },
       "10": {
         "name": "ワンアーム・ハンドスタンド・プッシュアップ",
+        "description": "",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,

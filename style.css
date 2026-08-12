@@ -114,7 +114,7 @@ button {
 .stack > * + * { margin-top: 10px; }
 .empty { color: var(--muted); text-align: center; padding: 28px 8px; }
 
-input, select {
+input, select, textarea {
   font: inherit;
   color: var(--text);
   background: var(--surface-2);
@@ -171,9 +171,61 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 }
 
 /* ── 実行画面 ─────────────────────────── */
-.run-head { text-align: center; padding: 8px 0 16px; }
+.run-head { position: relative; text-align: center; padding: 8px 0 16px; }
 .run-head .name { font-size: 15px; color: var(--muted); }
-.run-head .step { font-size: 20px; font-weight: 600; margin-top: 2px; }
+.run-head .step {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ステップの説明（タップで開くツールチップ） */
+.tip-btn {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1;
+  padding: 6px;
+  margin-left: 2px;
+  vertical-align: 2px;
+}
+.tip-btn[aria-expanded="true"] { color: var(--primary); }
+.tip {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  margin: 4px auto 0;
+  max-width: 330px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+}
+.tip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--surface-2);
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+.tip[hidden] { display: none; }
 .run-target { text-align: center; font-size: 22px; font-weight: 700; }
 .run-tempo { text-align: center; color: var(--muted); font-size: 13px; margin-top: 6px; }
 
@@ -267,6 +319,7 @@ details.group[open] > summary::after { content: '▴'; }
 details.group .body { padding: 0 16px 16px; }
 
 .stepno { color: var(--muted); font-size: 12px; white-space: nowrap; min-width: 3.6em; }
+textarea.desc { display: block; width: 100%; resize: vertical; line-height: 1.5; margin-bottom: 4px; }
 .lv-row { display: grid; grid-template-columns: 3.6em 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 6px; }
 .lv-row .lv-name { font-size: 13px; color: var(--muted); }
 .lv-row input { text-align: center; }
