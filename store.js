@@ -52,6 +52,7 @@ export function createInitialData(template) {
       const src = template.steps?.[ex.id]?.[String(s)] ?? {};
       steps[ex.id][String(s)] = {
         name: src.name ?? `Step${s}`,
+        description: src.description ?? '',
         unit: src.unit ?? 'reps',
         mode: src.mode ?? 'rep',
         perSide: src.perSide ?? false,

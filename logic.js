@@ -64,6 +64,11 @@ export function getStandard(data, ex, step) {
   return data.steps?.[ex]?.[String(step)] ?? null;
 }
 
+/** ステップの説明（未入力なら空文字）。実行画面のツールチップに出す */
+export function stepDescription(data, ex, step) {
+  return String(getStandard(data, ex, step)?.description ?? '').trim();
+}
+
 /** 級の基準値が入力済みか */
 export function isLevelFilled(std, level) {
   const l = std?.levels?.[level];
@@ -335,6 +340,7 @@ export function exerciseState(data, ex, today = toDateStr()) {
     startPhase: meta?.startPhase ?? 'down',
     step,
     stepName: std?.name ?? `Step${step}`,
+    description: stepDescription(data, ex, step),
     std,
     unit: std?.unit ?? 'reps',
     mode: std?.mode ?? 'rep',

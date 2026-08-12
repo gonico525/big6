@@ -285,6 +285,25 @@ test('実績の表示は片側種目を (左/右) にする', () => {
   assert.equal(L.setsText([[10, 9], [10, 8]], true), '(10/9), (10/8)');
 });
 
+test('ステップの説明は未入力なら空文字を返す', () => {
+  const data = makeData();
+  assert.equal(L.stepDescription(data, 'pushup', 3), '');
+
+  data.steps.pushup['3'].description = '  膝をついて、体を一直線に保つ  ';
+  assert.equal(L.stepDescription(data, 'pushup', 3), '膝をついて、体を一直線に保つ');
+  assert.equal(L.exerciseState(data, 'pushup').description, '膝をついて、体を一直線に保つ');
+
+  // 存在しないステップでも落ちない
+  assert.equal(L.stepDescription(data, 'pushup', 99), '');
+  assert.equal(L.stepDescription(data, 'unknown', 1), '');
+});
+
+test('説明が空白のみなら未入力として扱う', () => {
+  const data = makeData();
+  data.steps.squat['2'].description = '   \n  ';
+  assert.equal(L.stepDescription(data, 'squat', 2), '');
+});
+
 test('記録 id は日付・種目ごとに連番になる', () => {
   const records = [{ id: '2026-08-12-pushup-1', date: '2026-08-12', exercise: 'pushup' }];
   assert.equal(L.nextRecordId(records, '2026-08-12', 'pushup'), '2026-08-12-pushup-2');

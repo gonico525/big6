@@ -227,12 +227,19 @@ function startRun(ex, { fromPending = false } = {}) {
     return;
   }
   if (fromPending && data.pending && data.pending.exercise === ex) {
+    // 中断中にステップが変わっている可能性があるため、記録側のステップを正とする
     const p = data.pending;
+    const std = L.getStandard(data, ex, p.step);
     run = {
       ...baseRun(s),
       id: p.id,
       date: p.date,
       step: p.step,
+      stepName: std?.name ?? `Step${p.step}`,
+      description: L.stepDescription(data, ex, p.step),
+      unit: p.unit ?? std?.unit ?? 'reps',
+      mode: std?.mode ?? 'rep',
+      perSide: p.perSide ?? std?.perSide ?? false,
       target: p.targetOfDay,
       sets: p.sets ?? [],
       partial: p.partial ?? null,
@@ -252,6 +259,7 @@ function baseRun(s) {
     name: s.name,
     step: s.step,
     stepName: s.stepName,
+    description: s.description,
     startPhase: s.startPhase,
     unit: s.unit,
     mode: s.mode,
@@ -294,7 +302,14 @@ function renderRun() {
   return `
   ${topbar(r.name, `<button class="btn ghost small" data-act="abort">中断</button>`)}
   <div class="run-head">
-    <div class="step">Step${r.step}　${esc(r.stepName)}</div>
+    <div class="step">
+      <span>Step${r.step}　${esc(r.stepName)}</span>${
+        r.description
+          ? `<button class="tip-btn" data-act="tip" aria-expanded="false" aria-controls="step-tip" aria-label="このステップの説明">ⓘ</button>`
+          : ''
+      }
+    </div>
+    ${r.description ? `<div class="tip" id="step-tip" role="tooltip" hidden>${esc(r.description)}</div>` : ''}
   </div>
   <div class="card">
     <div class="run-target">目標　${esc(L.targetText(r.target, r.unit, r.perSide))}</div>
@@ -809,6 +824,8 @@ function stdRow(ex, step) {
       </select>
       <label class="row small" style="gap:6px"><input type="checkbox" data-std="${key('perSide')}" ${std.perSide ? 'checked' : ''}>片側</label>
     </div>
+    <textarea class="desc" rows="2" data-std="${key('description')}"
+      placeholder="実行画面に出す説明（任意）">${esc(std.description ?? '')}</textarea>
     ${[1, 2, 3].map(lv).join('')}
   </div>`;
 }
@@ -974,6 +991,15 @@ const actions = {
   },
   inc: () => setConfirmValue(run.confirmValue + 1),
   dec: () => setConfirmValue(run.confirmValue - 1),
+  // 実行中に再描画するとカウンタが参照している DOM が入れ替わるため、
+  // ツールチップの開閉は描画を挟まず DOM の属性だけで行う
+  tip: (el) => {
+    const tip = $('#step-tip');
+    if (!tip) return;
+    const opening = tip.hasAttribute('hidden');
+    tip.toggleAttribute('hidden', !opening);
+    el.setAttribute('aria-expanded', String(opening));
+  },
   record: () => commitValue(run.confirmValue),
   rest: () => {
     run.phase = 'rest';
@@ -1044,8 +1070,17 @@ const actions = {
   },
 };
 
+function closeTip() {
+  const tip = $('#step-tip');
+  if (!tip || tip.hasAttribute('hidden')) return;
+  tip.setAttribute('hidden', '');
+  $('.tip-btn')?.setAttribute('aria-expanded', 'false');
+}
+
 document.addEventListener('click', (ev) => {
   const el = ev.target.closest('[data-act]');
+  // ⓘ 以外のどこを触っても閉じる（吹き出し自身を含む。逃げ場のないタップを作らない）
+  if (el?.dataset.act !== 'tip') closeTip();
   if (!el) return;
   const fn = actions[el.dataset.act];
   if (!fn) return;
@@ -1103,9 +1138,10 @@ document.addEventListener('change', (ev) => {
   }
 });
 
-// 秒数入力欄などで Enter を押したときに送信されないようにする
 document.addEventListener('keydown', (ev) => {
+  // 秒数入力欄などで Enter を押したときに送信されないようにする
   if (ev.key === 'Enter' && ev.target.tagName === 'INPUT') ev.target.blur();
+  if (ev.key === 'Escape') closeTip();
 });
 
 window.addEventListener('beforeunload', () => wakeLock.release());
