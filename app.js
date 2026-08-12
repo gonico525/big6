@@ -402,7 +402,7 @@ function runCounting(r) {
         <circle class="bar" id="ring-bar" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
       </svg>
       <div class="inner">
-        <div class="count" id="ring-count">0</div>
+        <div class="count" id="ring-count">${isHold ? 0 : 1}</div>
         <div class="unit">${isHold ? '秒' : '回'}</div>
         <div class="phase" id="ring-phase"></div>
       </div>
@@ -529,7 +529,7 @@ function startCounter() {
     r.counter = createRepCounter({
       phases,
       targetReps: r.target.value || 0,
-      onUpdate: ({ reps, progress, phase }) => paint(progress, reps, phase.label),
+      onUpdate: ({ rep, progress, phase }) => paint(progress, rep, phase.label),
       onReach: goalReached,
     });
   }
@@ -1119,9 +1119,9 @@ const actions = {
   },
   stop: () => {
     const r = run;
-    // 最後のレップを終えて一息ついてから押すまでにテンポが 1 レップ進んでしまうため、
-    // 手動で終えたときだけ 1 を引く（目標到達による自動終了ではちょうどで止まるので引かない）
-    r.confirmValue = r.mode === 'hold' ? r.counter.seconds() : Math.max(0, r.counter.reps() - 1);
+    // 回りきったレップ数をそのまま既定値にする。押下が遅れて 1 多いときは
+    // 確認画面で減らす（仕様書 5.5(e)）
+    r.confirmValue = r.mode === 'hold' ? r.counter.seconds() : r.counter.reps();
     r.counter.stop();
     r.counter = null;
     r.phase = 'confirm';
