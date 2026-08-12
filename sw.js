@@ -8,6 +8,10 @@
  *   - 更新は次回起動時に反映される（デプロイのたびに CACHE_VERSION を上げなくてよい）
  *   - CACHE_VERSION はキャッシュを丸ごと捨てたいときだけ上げる
  *
+ * ただし、呼び出し側が `cache: 'no-cache'` / `'reload'` を指定した要求だけは
+ * ネットワークを先に見る。「今この場で最新が欲しい」という明示の意思表示であり、
+ * 次回起動まで待つ動作では要求を満たせないため（「テンプレートから読み込む」等）。
+ *
  * このファイルはモジュールではない（`type: 'classic'` で登録する）。
  */
 
@@ -82,6 +86,13 @@ self.addEventListener('fetch', (ev) => {
           return res;
         })
         .catch(() => null);
+
+      // 最新を明示的に求められた場合はネットワーク優先。取れなければキャッシュに戻る
+      if (req.cache === 'no-cache' || req.cache === 'reload') {
+        const res = await fresh;
+        if (res) return res;
+        if (cached) return cached;
+      }
 
       if (cached) return cached;
 
