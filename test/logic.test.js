@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import * as L from '../logic.js';
 import { defaultSettings, defaultInitialState } from '../store.js';
 
@@ -302,6 +303,21 @@ test('説明が空白のみなら未入力として扱う', () => {
   const data = makeData();
   data.steps.squat['2'].description = '   \n  ';
   assert.equal(L.stepDescription(data, 'squat', 2), '');
+});
+
+test('standards.json は全 60 ステップに説明の既定値を持つ', () => {
+  const url = new URL('../standards.json', import.meta.url);
+  const template = JSON.parse(readFileSync(url, 'utf8'));
+  for (const ex of EXERCISES) {
+    for (let s = 1; s <= 10; s++) {
+      const std = template.steps?.[ex.id]?.[String(s)];
+      assert.ok(std, `${ex.id} Step${s} がテンプレートにない`);
+      assert.ok(
+        String(std.description ?? '').trim() !== '',
+        `${ex.id} Step${s} の説明が未入力`
+      );
+    }
+  }
 });
 
 test('記録 id は日付・種目ごとに連番になる', () => {
