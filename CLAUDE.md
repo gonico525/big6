@@ -39,13 +39,17 @@ app.js            … 画面と状態管理（唯一 DOM に触れるファイ�
 logic.js          … 目標算出・昇格／降格・解禁・週集計・表示整形（純粋関数のみ）
 timer.js          … テンポカウント・保持・休憩・Web Audio・Wake Lock
 store.js          … 永続化の抽象化（localStorage への依存をここに閉じ込める）
+pwa.js            … Service Worker の登録・更新検知・ホーム画面追加（DOM には触れない）
+sw.js             … Service Worker 本体。モジュールではない（classic として登録される）
+manifest.json     … ウェブアプリマニフェスト
+icons/            … アイコン。SVG が原本、PNG はそこから書き出したもの
 standards.json    … ステップマスタの初期テンプレート（初回起動時のみ読む）
 style.css         … 全スタイル（CSS 変数は :root にまとめてある）
 test/logic.test.js
 docs/spec/        … 仕様書
 ```
 
-依存は一方向: `app.js → { logic.js, timer.js, store.js }`。
+依存は一方向: `app.js → { logic.js, timer.js, store.js, pwa.js }`。
 `logic.js` / `store.js` は互いに依存しない（テストは両方を import する）。
 
 **守るべき境界**
@@ -55,6 +59,7 @@ docs/spec/        … 仕様書
 | `logic.js` に DOM・`window`・`localStorage` を持ち込まない | node:test でそのまま実行できることが前提 |
 | `localStorage` を触るのは `store.js` だけ | Capacitor でのネイティブ化時に差し替える範囲を 1 ファイルに限定（仕様書 6.3） |
 | 音・タイマー・Wake Lock は `timer.js` に置く | `app.js` はライフサイクル（start/stop）だけを呼ぶ |
+| Service Worker の登録・更新判定は `pwa.js` に置く | `pwa.js` は状態を返すだけ。バナーやボタンの描画は `app.js`（`updateBanner()` / `appSection()`） |
 | 判定ロジックを `app.js` に書かない | テストできなくなる。導出できる値は `logic.js` の関数として足す |
 
 ## データモデル
@@ -138,6 +143,20 @@ docs/spec/        … 仕様書
 セット確定ごとに `savePending()`（`app.js:561`）が中断復帰用の `pending` を書く。
 ワークアウトの確定は `finishRun()`（`app.js:578`）が `records` に push して `pending` を消す。
 
+## PWA（オフライン動作・ホーム画面追加）
+
+`sw.js` は **stale-while-revalidate**。キャッシュを即座に返し、裏で取り直して次回に備える。
+ビルド工程がなくファイル名にハッシュが付かないため、デプロイのたびに版を上げなくても
+更新が届くこの方式を採っている。代償として、**反映は次回起動時**になる。
+
+- **ファイルを増やしたら `sw.js` の `SHELL` に足す**。足し忘れるとオフラインで欠ける
+- `CACHE_VERSION` はキャッシュを丸ごと捨てたいときだけ上げる（通常の変更では不要）
+- `sw.js` 自体が変わると新しい Worker が待機し、`pwa.js` が検知してホームにバナーを出す。
+  「更新する」→ `skip-waiting` を postMessage → `controllerchange` で再読み込み
+- `pwa.js` の `init()` に渡したコールバックは状態変化のたびに呼ばれる。`app.js` 側は
+  **実行画面では再描画しない**（カウント中の DOM 参照が切れるため。`boot()` を参照）
+- アイコンの原本は `icons/*.svg`。PNG はそこから書き出す（192 / 512 / maskable 512 / 180）
+
 ## テスト
 
 `test/logic.test.js` のみ。`node:test` + `node:assert/strict`、依存なし。
@@ -159,7 +178,8 @@ docs/spec/        … 仕様書
 `main` への push で発火する。ビルドがないので**リポジトリの中身がそのまま公開物**。
 公開したくないファイルを追加しない。
 
-Wake Lock API と Web Audio API を使うため HTTPS 配信が前提。
+Wake Lock API・Web Audio API・Service Worker を使うため HTTPS 配信が前提
+（`localhost` だけは例外的に動く）。
 
 ## 変更時のチェックリスト
 
@@ -168,6 +188,7 @@ Wake Lock API と Web Audio API を使うため HTTPS 配信が前提。
 - [ ] `npm test` が通る
 - [ ] ユーザー入力を `innerHTML` に載せる箇所は `esc()` を通した
 - [ ] 保存データの形を変えたなら `createInitialData()` と `migrate()` を更新した
+- [ ] 配信するファイルを増やしたなら `sw.js` の `SHELL` に足した
 - [ ] `README.md` の記述（ファイル構成・使い方・実装上の判断）と矛盾しない
 
 ## コミットとブランチ

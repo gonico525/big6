@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="プリズナートレーニング">
+  <title>プリズナートレーニング</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c232d"/>
+      <stop offset="1" stop-color="#11151b"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g>
+    <rect x="76.0"  y="324" width="44" height="104" rx="22" fill="#33587e"/>
+    <rect x="139.2" y="280" width="44" height="148" rx="22" fill="#3a6c9e"/>
+    <rect x="202.4" y="236" width="44" height="192" rx="22" fill="#4280c1"/>
+    <rect x="265.6" y="192" width="44" height="236" rx="22" fill="#4a8ade"/>
+    <rect x="328.8" y="148" width="44" height="280" rx="22" fill="#4f8ef7"/>
+    <rect x="392.0" y="104" width="44" height="324" rx="22" fill="#f0a83c"/>
+  </g>
+</svg>

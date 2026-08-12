@@ -44,6 +44,8 @@ html, body {
   font-size: 16px;
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
+  /* ホーム画面から起動したとき、実行中の引っ張り更新で画面が再読み込みされないようにする */
+  overscroll-behavior-y: contain;
 }
 
 #app {
