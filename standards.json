@@ -2,7 +2,8 @@
   "_comment": [
     "ステップマスタの初期テンプレート。実際の値は保存領域（store）に持つ。",
     "設定画面から種目・ステップごとに修正できる。",
-    "description は実行画面のツールチップに出す説明。任意入力。"
+    "description は実行画面のツールチップに出す説明。フォームの要点を既定値として入れてある。",
+    "書籍の文章ではないので、自分の言葉に書き換えても空にしてもよい。"
   ],
   "exercises": [
     {
@@ -46,7 +47,7 @@
     "pushup": {
       "1": {
         "name": "ウォール・プッシュアップ",
-        "description": "",
+        "description": "壁から腕一本分離れて立ち、肩幅で壁に手をつく。体を一直線に保ったまま肘を曲げ、額が壁に触れるまで近づいて押し戻す。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -67,7 +68,7 @@
       },
       "2": {
         "name": "インクライン・プッシュアップ",
-        "description": "",
+        "description": "机や手すりなど腰の高さの台に手をつき、体を斜め一直線に。胸が台に触れるまで下ろして押し上げる。台が低いほどきつくなる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -88,7 +89,7 @@
       },
       "3": {
         "name": "ニーリング・プッシュアップ",
-        "description": "",
+        "description": "膝をついて手は肩幅。膝から頭までを一直線に保ち、胸が拳一つ分の高さになるまで下ろす。腰を折らない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -109,7 +110,7 @@
       },
       "4": {
         "name": "ハーフ・プッシュアップ",
-        "description": "",
+        "description": "腕立ての姿勢から、肘が直角になる位置（可動域の半分）まで下ろして戻す。ボールなどを目印にすると深さが安定する。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -130,7 +131,7 @@
       },
       "5": {
         "name": "フル・プッシュアップ",
-        "description": "",
+        "description": "手は肩幅、踵から頭まで一直線。胸が拳一つ分の高さになるまで下ろし、肘を伸ばしきるまで押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -151,7 +152,7 @@
       },
       "6": {
         "name": "クローズ・プッシュアップ",
-        "description": "",
+        "description": "両手の親指と人差し指が触れるくらい近づけて置く。肘を体側にこするように下ろす。腕の後ろ側に効く。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -172,7 +173,7 @@
       },
       "7": {
         "name": "アンイーブン・プッシュアップ",
-        "description": "",
+        "description": "片手をボールの上、もう片方は床に置く。床側の腕を主役に下ろして押し上げる。セットごとに左右を入れ替える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -193,7 +194,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・プッシュアップ",
-        "description": "",
+        "description": "片手を背中に回し、足は広めに開く。肘が直角になる位置まで下ろして戻す。体をひねらない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -214,7 +215,7 @@
       },
       "9": {
         "name": "レバー・プッシュアップ",
-        "description": "",
+        "description": "片手は床、もう片方は腕を伸ばしてボールの上に添える。ボール側は支えるだけで、床側の腕で押す。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -235,7 +236,7 @@
       },
       "10": {
         "name": "ワンアーム・プッシュアップ",
-        "description": "",
+        "description": "片手を背中に回し、足は肩幅より広く。胸が拳一つ分の高さになるまで下ろして押し上げる。肩の線を水平に保つ。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -258,7 +259,7 @@
     "squat": {
       "1": {
         "name": "ショルダー・スタンド・スクワット",
-        "description": "",
+        "description": "仰向けから肩で逆立ちし、両手で腰を支える。膝を曲げて額へ近づけ、脚を伸ばして戻す。首に体重を乗せない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -279,7 +280,7 @@
       },
       "2": {
         "name": "ジャックナイフ・スクワット",
-        "description": "",
+        "description": "椅子や台に手を添えて体重の一部を預け、腿が床と平行より下まで腰を落とす。腕の助けは少しずつ減らす。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -300,7 +301,7 @@
       },
       "3": {
         "name": "サポーティッド・スクワット",
-        "description": "",
+        "description": "支えを軽くつまむ程度に持ち、フルの深さまでしゃがんで立つ。支えはバランスを取るためだけに使う。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -321,7 +322,7 @@
       },
       "4": {
         "name": "ハーフ・スクワット",
-        "description": "",
+        "description": "足は肩幅、手は前へ。腿が床と平行になる位置まで腰を落として立つ。膝はつま先と同じ方向へ。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -342,7 +343,7 @@
       },
       "5": {
         "name": "フル・スクワット",
-        "description": "",
+        "description": "腿の裏がふくらはぎに触れるまでしゃがみ、立ち上がる。踵は床につけたまま、背中を丸めない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -363,7 +364,7 @@
       },
       "6": {
         "name": "クローズ・スクワット",
-        "description": "",
+        "description": "両足を揃えてフルの深さまでしゃがむ。膝が胸に触れる。倒れないよう体幹で支える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -384,7 +385,7 @@
       },
       "7": {
         "name": "アンイーブン・スクワット",
-        "description": "",
+        "description": "片足をボールの上に置き、もう片方の脚でしゃがんで立つ。ボール側は補助程度。セットごとに左右を入れ替える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -405,7 +406,7 @@
       },
       "8": {
         "name": "ハーフ・ワンレッグ・スクワット",
-        "description": "",
+        "description": "片脚を前に伸ばし、支持脚の膝が直角になるまで下ろして立つ。セットごとに左右を入れ替える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -426,7 +427,7 @@
       },
       "9": {
         "name": "アシステッド・ワンレッグ・スクワット",
-        "description": "",
+        "description": "片脚を前に伸ばし、片手で支えを軽く持ちながら最後までしゃがんで立つ。手の力は最小限に。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -447,7 +448,7 @@
       },
       "10": {
         "name": "ワンレッグ・スクワット",
-        "description": "",
+        "description": "支えなしで、片脚を前に伸ばしたまま最後までしゃがみ、立ち上がる。踵は床につけたまま。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -470,7 +471,7 @@
     "pullup": {
       "1": {
         "name": "ヴァーチカル・プル",
-        "description": "",
+        "description": "縦の支柱やドア枠を両手で握り、体を後ろに傾けて腕を伸ばす。腕と背中で体を引き寄せて戻す。足の位置で強度を調整する。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -491,7 +492,7 @@
       },
       "2": {
         "name": "ホリゾンタル・プル",
-        "description": "",
+        "description": "腰の高さのバーの下に潜り、踵から頭まで一直線でぶら下がる。胸がバーに触れるまで引き上げる。腰を落とさない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -512,7 +513,7 @@
       },
       "3": {
         "name": "ジャックナイフ・プル",
-        "description": "",
+        "description": "バーにぶら下がり、前に置いた椅子などに足を乗せる。脚で補助しながら顎がバーを越えるまで引く。脚の助けは少しずつ減らす。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -533,7 +534,7 @@
       },
       "4": {
         "name": "ハーフ・プルアップ",
-        "description": "",
+        "description": "ぶら下がった状態から、肘が直角になる位置まで引き上げて戻す。反動を使わない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -554,7 +555,7 @@
       },
       "5": {
         "name": "フル・プルアップ",
-        "description": "",
+        "description": "手は肩幅、手のひらは前向き。腕を伸ばしきった状態から顎がバーを越えるまで引き上げる。体を振らない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -575,7 +576,7 @@
       },
       "6": {
         "name": "クローズ・プルアップ",
-        "description": "",
+        "description": "両手が触れるくらい近づけて握り、顎がバーを越えるまで引く。可動域が広がり負荷が上がる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -596,7 +597,7 @@
       },
       "7": {
         "name": "アンイーブン・プルアップ",
-        "description": "",
+        "description": "片手でバーを握り、もう片方はその手首を掴む。バー側の腕を主役に引き上げる。セットごとに左右を入れ替える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -617,7 +618,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・プルアップ",
-        "description": "",
+        "description": "片手でバーを握り、肘が直角の位置から顎がバーを越えるまで引く。腕を伸ばしきるところまでは下ろさない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -638,7 +639,7 @@
       },
       "9": {
         "name": "アシステッド・ワンアーム・プルアップ",
-        "description": "",
+        "description": "片手でバーを握り、もう片方はタオルなどを軽く掴んで補助しながら、伸ばしきった位置から引き上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -659,7 +660,7 @@
       },
       "10": {
         "name": "ワンアーム・プルアップ",
-        "description": "",
+        "description": "片手だけで、腕を伸ばしきった状態から顎がバーを越えるまで引き上げる。体をひねらず、下ろすときも制御する。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -682,7 +683,7 @@
     "legraise": {
       "1": {
         "name": "ニー・タック",
-        "description": "",
+        "description": "椅子の端に浅く座り、座面の後ろを手で掴む。脚を伸ばして前に浮かせ、膝を胸へ引き寄せて戻す。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -703,7 +704,7 @@
       },
       "2": {
         "name": "フラット・ニー・レイズ",
-        "description": "",
+        "description": "仰向けで脚を伸ばし、踵を床から数センチ浮かせる。膝を胸まで引き寄せ、伸ばして戻す。踵は床につけない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -724,7 +725,7 @@
       },
       "3": {
         "name": "フラット・ベントレッグ・レイズ",
-        "description": "",
+        "description": "仰向けで膝を軽く曲げたまま、踵を浮かせた位置から脚が垂直になるまで上げて戻す。腰を反らせない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -745,7 +746,7 @@
       },
       "4": {
         "name": "フラット・フロッグ・レイズ",
-        "description": "",
+        "description": "仰向けで脚を伸ばしたまま垂直まで上げ、膝を曲げながら下ろして下で伸ばす。上げるときは伸ばした脚で。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -766,7 +767,7 @@
       },
       "5": {
         "name": "フラット・ストレートレッグ・レイズ",
-        "description": "",
+        "description": "仰向けで脚を伸ばしたまま垂直まで上げ、踵が床につく直前まで下ろす。ゆっくり動かし、反動を使わない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -787,7 +788,7 @@
       },
       "6": {
         "name": "ハンギング・ニー・レイズ",
-        "description": "",
+        "description": "バーにぶら下がり、膝を曲げたまま腰の高さまで引き上げて下ろす。体を振らない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -808,7 +809,7 @@
       },
       "7": {
         "name": "ハンギング・ベントレッグ・レイズ",
-        "description": "",
+        "description": "バーにぶら下がり、膝を軽く曲げたまま腿が床と平行になるまで上げて下ろす。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -829,7 +830,7 @@
       },
       "8": {
         "name": "ハンギング・フロッグ・レイズ",
-        "description": "",
+        "description": "ぶら下がって脚を伸ばしたまま床と平行まで上げ、膝を曲げながら下ろす。上げるときは伸ばした脚で。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -850,7 +851,7 @@
       },
       "9": {
         "name": "パーシャル・ストレートレッグ・レイズ",
-        "description": "",
+        "description": "ぶら下がって脚を伸ばしたまま、四十五度ほどの高さまで上げて下ろす。膝は曲げない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -871,7 +872,7 @@
       },
       "10": {
         "name": "ハンギング・ストレートレッグ・レイズ",
-        "description": "",
+        "description": "ぶら下がって脚を伸ばしたまま、床と平行になるまで上げてゆっくり下ろす。反動を使わない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -894,7 +895,7 @@
     "bridge": {
       "1": {
         "name": "ショート・ブリッジ",
-        "description": "",
+        "description": "仰向けで膝を立て、手は体の横。踵と肩で支えて腰を持ち上げ、膝から肩まで一直線に。上で止めてから下ろす。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -915,7 +916,7 @@
       },
       "2": {
         "name": "ストレート・ブリッジ",
-        "description": "",
+        "description": "床に座って脚を前に伸ばし、腰の横に手をつく。腰を持ち上げて踵から肩まで一直線にし、下ろす。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -936,7 +937,7 @@
       },
       "3": {
         "name": "アングルド・ブリッジ",
-        "description": "",
+        "description": "椅子やベッドなど台に手をつき、体を反らせて腰を持ち上げる。台が低いほどきつくなる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -957,7 +958,7 @@
       },
       "4": {
         "name": "ヘッド・ブリッジ",
-        "description": "",
+        "description": "仰向けで膝を立て、耳の横に手をつく。頭頂が床につく位置まで持ち上げ、背中を反らせる。首に体重をかけすぎない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -978,7 +979,7 @@
       },
       "5": {
         "name": "ハーフ・ブリッジ",
-        "description": "",
+        "description": "仰向けで耳の横に手をつき、腕を伸ばして体を持ち上げる。脚は曲げたまま。手と足を近づけるほどきつくなる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -999,7 +1000,7 @@
       },
       "6": {
         "name": "フル・ブリッジ",
-        "description": "",
+        "description": "仰向けで耳の横に手をつき、腕と脚を伸ばしきって体を弓なりにする。手足を近づけ、胸を開く。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1020,7 +1021,7 @@
       },
       "7": {
         "name": "ウォール・ウォーキング（ダウン）",
-        "description": "",
+        "description": "壁に背を向けて立ち、壁に手をついて一歩ずつ下りていき、床に手が届くまで運ぶ。下りきりで1回と数える。",
         "unit": "reps",
         "mode": "free",
         "perSide": false,
@@ -1041,7 +1042,7 @@
       },
       "8": {
         "name": "ウォール・ウォーキング（アップ）",
-        "description": "",
+        "description": "ブリッジの姿勢から壁を手で登り、立ち上がるまでを1回と数える。",
         "unit": "reps",
         "mode": "free",
         "perSide": false,
@@ -1062,7 +1063,7 @@
       },
       "9": {
         "name": "クロージング・ブリッジ",
-        "description": "",
+        "description": "立った状態から壁を使わずに後ろへ反り、手を床につけてブリッジを作る（下りのみ）。戻りは無理をしない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1083,7 +1084,7 @@
       },
       "10": {
         "name": "スタンド・トゥ・スタンド・ブリッジ",
-        "description": "",
+        "description": "立位から後ろへ反ってブリッジになり、そのまま手を離して立ち上がる。下りと戻りで1回と数える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1106,7 +1107,7 @@
     "handstand": {
       "1": {
         "name": "ウォール・ヘッドスタンド",
-        "description": "",
+        "description": "壁の前で頭と両手で三角を作り、脚を壁に預けて逆さに立つ。体重を手にも分散させ、首だけに乗せない。",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1127,7 +1128,7 @@
       },
       "2": {
         "name": "クロウ・スタンド",
-        "description": "",
+        "description": "しゃがんで手を床につき、膝を上腕に乗せて足を浮かせ、腕だけでバランスを取る。視線は少し前へ。",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1148,7 +1149,7 @@
       },
       "3": {
         "name": "ウォール・ハンドスタンド",
-        "description": "",
+        "description": "壁に向かって手をつき、脚を上げて腕を伸ばしきった逆立ちを保つ。体は一直線、腰を反らせない。",
         "unit": "sec",
         "mode": "hold",
         "perSide": false,
@@ -1169,7 +1170,7 @@
       },
       "4": {
         "name": "ハーフ・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "壁を使った逆立ちから、肘が直角になる位置まで下ろして押し上げる。頭を床にぶつけない。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1190,7 +1191,7 @@
       },
       "5": {
         "name": "ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "壁を使った逆立ちから、頭が床に軽く触れるまで下ろし、腕を伸ばしきるまで押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1211,7 +1212,7 @@
       },
       "6": {
         "name": "クローズ・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "両手を触れるくらい近づけた逆立ちで、頭が床に触れるまで下ろして押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": false,
@@ -1232,7 +1233,7 @@
       },
       "7": {
         "name": "アンイーブン・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "片手をボールの上に置いた逆立ちで下ろして押し上げる。床側の腕が主役。セットごとに左右を入れ替える。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1253,7 +1254,7 @@
       },
       "8": {
         "name": "ハーフ・ワンアーム・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "片手だけで壁を使った逆立ちを保ち、肘が直角になる位置まで下ろして押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1274,7 +1275,7 @@
       },
       "9": {
         "name": "レバー・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "片手は床、もう片方は腕を伸ばしてボールに添えた逆立ちで、床側の腕で押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,
@@ -1295,7 +1296,7 @@
       },
       "10": {
         "name": "ワンアーム・ハンドスタンド・プッシュアップ",
-        "description": "",
+        "description": "片手だけの逆立ちで、頭が床に触れるまで下ろして押し上げる。",
         "unit": "reps",
         "mode": "rep",
         "perSide": true,

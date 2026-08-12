@@ -13,7 +13,7 @@
 - サーバ・アカウント・同期なし。データは端末の `localStorage` のみ
 - 表示言語・コメント・コミットメッセージはすべて**日本語**
 
-**仕様書が正**: [`docs/spec/prisoner-training-app-spec-v0.5.md`](docs/spec/prisoner-training-app-spec-v0.5.md)。
+**仕様書が正**: [`docs/spec/prisoner-training-app-spec-v0.6.md`](docs/spec/prisoner-training-app-spec-v0.6.md)。
 コード中のコメントは「仕様書 4.1(c)」のように章番号で仕様を参照している。
 ロジックを変更するときは、まず仕様書の該当章を読むこと。仕様書と実装が食い違う場合は、
 どちらが正しいかを判断せずユーザーに確認する。
@@ -21,7 +21,7 @@
 ## コマンド
 
 ```sh
-npm test        # logic.js のテスト（node:test、依存なし）。25 ケース
+npm test        # logic.js のテスト（node:test、依存なし）。26 ケース
 npm run serve   # 静的サーバ（python3 -m http.server 8000）
 ```
 

@@ -1190,7 +1190,7 @@ const actions = {
     setTimeout(() => audio.tick(), 400);
   },
   'reload-template': async () => {
-    if (!confirm('ステップマスタ（ステップ名・基準値・単位・カウント方式・片側種目・開始フェーズ）を standards.json の内容で上書きします。実施記録と設定は残ります。よろしいですか？')) return;
+    if (!confirm('ステップマスタ（ステップ名・説明・基準値・単位・カウント方式・片側種目・開始フェーズ）を standards.json の内容で上書きします。実施記録と設定は残ります。よろしいですか？')) return;
     try {
       const template = await fetch('./standards.json', { cache: 'no-cache' }).then((r) => r.json());
       const fresh = createInitialData(template);
