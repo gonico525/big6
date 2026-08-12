@@ -3,7 +3,7 @@
 BIG6 の実施を継続するための個人用 Web アプリ。起動した時点で「今日やること」が確定表示され、
 実行の完了が最小操作で記録される。記録アプリではなく実行アプリとして作っている。
 
-仕様書: [`docs/spec/prisoner-training-app-spec-v0.4.md`](docs/spec/prisoner-training-app-spec-v0.4.md)
+仕様書: [`docs/spec/prisoner-training-app-spec-v0.5.md`](docs/spec/prisoner-training-app-spec-v0.5.md)
 
 ## 使い方
 
@@ -29,6 +29,16 @@ BIG6 の実施を継続するための個人用 Web アプリ。起動した時�
 - セット間は「休憩する」でカウントアップ
 - 途中で離脱しても、次回起動時に「続きから／ここまでを記録／破棄」を選べる
 
+### ホーム画面に追加する（PWA）
+
+Android / Chrome は 設定 →「アプリ」→「ホーム画面に追加」、
+iOS / Safari は共有 →「ホーム画面に追加」。
+追加するとブラウザの UI なしで起動し、圏外・機内モードでも動く
+（一度開いた端末では、アプリ本体とステップマスタがキャッシュされる）。
+
+新しい版が配信されると、次に開いたときホームに「新しい版があります」と出る。
+「更新する」を押すと再読み込みされる。記録は端末に残るので消えない。
+
 ## 画面
 
 | 画面 | 役割 |
@@ -46,6 +56,10 @@ app.js          … 画面と状態管理
 logic.js        … 目標算出・昇格判定・降格判定・解禁判定（DOM に触れない純粋関数）
 timer.js        … テンポカウント・休憩タイマー・音生成（Web Audio API）
 store.js        … 保存の抽象化（localStorage への依存をここに閉じ込める）
+pwa.js          … Service Worker の登録・更新検知・ホーム画面追加の導線
+sw.js           … Service Worker（オフライン用のキャッシュ）
+manifest.json   … ウェブアプリマニフェスト
+icons/          … アプリアイコン（SVG が原本。PNG はそこから書き出したもの）
 standards.json  … ステップマスタの初期テンプレート（名称・説明・基準値・unit・mode・perSide）
 style.css
 test/           … logic.js のテスト（node:test）
@@ -69,7 +83,17 @@ npm run serve   # 静的サーバ。http://localhost:8000
 初回のみ、リポジトリの **Settings → Pages → Build and deployment → Source** を
 **GitHub Actions** に切り替える必要がある。
 
-Wake Lock API と Web Audio API を使うため、HTTPS 配信が前提。
+Wake Lock API・Web Audio API・Service Worker を使うため、HTTPS 配信が前提
+（`localhost` は例外として動く）。
+
+Service Worker は stale-while-revalidate で動く。キャッシュを返してから裏で取り直すため、
+デプロイした内容はユーザーの**次回起動時**に反映される。
+ビルド工程がなくファイル名にハッシュが付かないため、この方式にしている。
+`sw.js` に**ファイルを追加したら `SHELL` にも足す**こと（足し忘れるとオフラインで欠ける）。
+キャッシュを丸ごと捨てたいときだけ `sw.js` の `CACHE_VERSION` を上げる。
+
+アイコンを直したときは `icons/*.svg` を編集し、PNG を書き出し直す
+（Chrome などで SVG を開いて 192 / 512 / 180 px で保存すればよい）。
 
 ## データ
 

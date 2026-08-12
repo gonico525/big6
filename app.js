@@ -4,6 +4,7 @@
 
 import { store, createInitialData, defaultSettings, defaultInitialState } from './store.js';
 import * as L from './logic.js';
+import { pwa } from './pwa.js';
 import {
   audio,
   wakeLock,
@@ -33,6 +34,8 @@ let view = { name: 'home' };
 let run = null;
 /** @type {any} モーダル */
 let modal = null;
+/** @type {any} PWA の状態（更新の待機・ホーム画面追加の可否） */
+let pwaState = pwa.state;
 
 const app = document.getElementById('app');
 const modalRoot = document.getElementById('modal-root');
@@ -86,6 +89,11 @@ async function boot() {
   }
   audio.configure(data.settings.sound);
   wakeLock.bindVisibility(() => !!run && (run.countdown?.running || run.counter?.running || run.rest?.running));
+  pwa.init((s) => {
+    pwaState = s;
+    // 実行中の再描画はカウント表示の書き換え先を失わせるので避ける（次の描画で反映される）
+    if (view.name !== 'run') render();
+  });
   render();
 }
 
@@ -139,6 +147,7 @@ function renderHome() {
     <button class="btn ghost small" data-act="progress">進捗</button>
     <button class="btn ghost small" data-act="settings">設定</button>
   </div>
+  ${pwaState.updateReady ? updateBanner() : ''}
   ${data.pending ? pendingBanner() : ''}
   ${
     unfilled.length
@@ -205,6 +214,17 @@ function lockedCard(s) {
     <span class="small">まだ推奨されません</span>
     <span>›</span>
   </button>`;
+}
+
+/** 新しい版の Service Worker が待機しているときの案内 */
+function updateBanner() {
+  return `<div class="banner">
+    <div><b>新しい版があります</b></div>
+    <div class="small muted" style="margin:4px 0 10px">
+      更新すると再読み込みされます。記録はこの端末に残ります。
+    </div>
+    <button class="btn small primary" data-act="apply-update">更新する</button>
+  </div>`;
 }
 
 function pendingBanner() {
@@ -842,6 +862,10 @@ function renderSettings() {
     <button class="btn small" data-act="standards">編集する</button>
   </div></details>
 
+  <details class="group"><summary>アプリ</summary><div class="body stack">
+    ${appSection()}
+  </div></details>
+
   <details class="group"><summary>データ</summary><div class="body stack">
     <button class="btn block" data-act="reload-template">ステップマスタをテンプレートから読み込む</button>
     <button class="btn block" data-act="export">JSON をエクスポート</button>
@@ -850,6 +874,27 @@ function renderSettings() {
     <button class="btn block danger ghost" data-act="reset">すべてのデータを削除</button>
   </div></details>
   <div style="height:32px"></div>`;
+}
+
+/** 設定 →「アプリ」。ホーム画面への追加とオフライン動作の状態を示す */
+function appSection() {
+  const p = pwaState;
+  const lines = [];
+
+  if (p.standalone) lines.push('ホーム画面から起動しています。');
+  else if (p.canInstall) lines.push('ホーム画面に追加すると、ブラウザの UI なしで起動できます。');
+  else lines.push('ブラウザのメニュー（iOS は共有 →「ホーム画面に追加」）から、ホーム画面に追加できます。');
+
+  lines.push(
+    p.supported
+      ? '一度開いたあとは、圏外・機内モードでも起動できます。'
+      : 'この環境ではオフライン動作は使えません（HTTPS での配信が必要）。'
+  );
+
+  return `
+    <p class="small muted" style="margin:0">${lines.map(esc).join('<br>')}</p>
+    ${p.canInstall ? '<button class="btn block primary" data-act="install">ホーム画面に追加</button>' : ''}
+    ${p.updateReady ? '<button class="btn block" data-act="apply-update">新しい版に更新する</button>' : ''}`;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -973,6 +1018,13 @@ const actions = {
   'close-modal': () => closeModal(),
   'modal-back': (el, ev) => {
     if (ev.target === el) closeModal();
+  },
+
+  // PWA
+  'apply-update': () => pwa.applyUpdate(),
+  install: async () => {
+    await pwa.promptInstall();
+    render();
   },
 
   // ホーム
