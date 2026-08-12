@@ -3,7 +3,7 @@
 BIG6 の実施を継続するための個人用 Web アプリ。起動した時点で「今日やること」が確定表示され、
 実行の完了が最小操作で記録される。記録アプリではなく実行アプリとして作っている。
 
-仕様書: [`docs/spec/prisoner-training-app-spec-v0.4.md`](docs/spec/prisoner-training-app-spec-v0.4.md)
+仕様書: [`docs/spec/prisoner-training-app-spec-v0.5.md`](docs/spec/prisoner-training-app-spec-v0.5.md)
 
 ## 使い方
 
