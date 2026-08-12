@@ -431,13 +431,13 @@ export function unitLabel(unit) {
   return unit === 'sec' ? '秒' : '回';
 }
 
-/** 「2セット × 左右各10回」 */
+/** 「左右各10回 × 2セット」 */
 export function targetText(target, unit, perSide) {
   if (!target || target.value == null) return '—';
   const u = unitLabel(unit);
   return perSide
-    ? `${target.sets}セット × 左右各${target.value}${u}`
-    : `${target.sets}セット × ${target.value}${u}`;
+    ? `左右各${target.value}${u} × ${target.sets}セット`
+    : `${target.value}${u} × ${target.sets}セット`;
 }
 
 /** 「2×(10/9), (10/8)」 */
