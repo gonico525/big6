@@ -1,0 +1,1259 @@
+{
+  "_comment": [
+    "ステップマスタの初期テンプレート。実際の値は保存領域（store）に持つ。",
+    "levels の基準値は書籍を参照して利用者が入力する（アプリには同梱しない）。",
+    "unit / mode / perSide は既定値。設定画面から種目・ステップごとに修正できる。"
+  ],
+  "exercises": [
+    {
+      "id": "pushup",
+      "name": "プッシュアップ",
+      "group": "big4",
+      "startPhase": "down"
+    },
+    {
+      "id": "squat",
+      "name": "スクワット",
+      "group": "big4",
+      "startPhase": "down"
+    },
+    {
+      "id": "pullup",
+      "name": "プルアップ",
+      "group": "big4",
+      "startPhase": "up"
+    },
+    {
+      "id": "legraise",
+      "name": "レッグレイズ",
+      "group": "big4",
+      "startPhase": "up"
+    },
+    {
+      "id": "bridge",
+      "name": "ブリッジ",
+      "group": "late",
+      "startPhase": "up"
+    },
+    {
+      "id": "handstand",
+      "name": "ハンドスタンド・プッシュアップ",
+      "group": "late",
+      "startPhase": "down"
+    }
+  ],
+  "steps": {
+    "pushup": {
+      "1": {
+        "name": "ウォール・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "インクライン・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "ニーリング・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "ハーフ・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "フル・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "クローズ・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "アンイーブン・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ハーフ・ワンアーム・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "レバー・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "ワンアーム・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    },
+    "squat": {
+      "1": {
+        "name": "ショルダースタンド・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "ジャックナイフ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "サポーティド・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "ハーフ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "フル・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "クローズ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "アンイーブン・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ハーフ・ワンレッグ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "アシステッド・ワンレッグ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "ワンレッグ・スクワット",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    },
+    "pullup": {
+      "1": {
+        "name": "ヴァーチカル・プル",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "ホリゾンタル・プル",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "ジャックナイフ・プル",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "ハーフ・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "フル・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "クローズ・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "アンイーブン・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ハーフ・ワンアーム・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "アシステッド・ワンアーム・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "ワンアーム・プルアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    },
+    "legraise": {
+      "1": {
+        "name": "ニー・タック",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "フラット・ニー・レイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "フラット・ベント・レッグレイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "フラット・フロッグ・レイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "フラット・ストレート・レッグレイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "ハンギング・ニー・レイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "ハンギング・ベント・レッグレイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ハンギング・フロッグ・レイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "パーシャル・ストレート・レッグレイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "ハンギング・ストレート・レッグレイズ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    },
+    "bridge": {
+      "1": {
+        "name": "ショート・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "ストレート・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "アングルド・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "ヘッド・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "ハーフ・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "フル・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "ウォールウォーキング（下向き）",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ウォールウォーキング（上向き）",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "クロージング・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "スタンド・トゥ・スタンド・ブリッジ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    },
+    "handstand": {
+      "1": {
+        "name": "ウォール・ヘッドスタンド",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "2": {
+        "name": "クロウ・スタンド",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "3": {
+        "name": "ウォール・ハンドスタンド",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "4": {
+        "name": "ハーフ・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "5": {
+        "name": "ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "6": {
+        "name": "クローズ・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "7": {
+        "name": "アンイーブン・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "8": {
+        "name": "ハーフ・ワンアーム・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "9": {
+        "name": "レバー・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      },
+      "10": {
+        "name": "ワンアーム・ハンドスタンド・プッシュアップ",
+        "unit": "reps",
+        "mode": "rep",
+        "perSide": false,
+        "levels": {
+          "1": {
+            "sets": null,
+            "value": null
+          },
+          "2": {
+            "sets": null,
+            "value": null
+          },
+          "3": {
+            "sets": null,
+            "value": null
+          }
+        }
+      }
+    }
+  }
+}
