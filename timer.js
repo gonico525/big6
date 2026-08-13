@@ -208,8 +208,10 @@ export function createCountdown({ seconds, onTick, onDone }) {
 /**
  * テンポカウントを回す。
  * - 毎秒ビープ、レップの先頭のみ別の音
- * - カウントはレップの最終フェーズを完了した時点で +1（進行中は数えない）
- * - targetReps に達したら自動で停止し、onReach を 1 度だけ呼ぶ
+ * - 表示するのは**いま行っているレップの番号**（1 始まり）。レップの先頭で 1 増える。
+ *   完了数（先頭では 0）を出すと、目標の回数が表示された瞬間はまだそのレップを
+ *   やっていないことになり、画面の数字と実際に行った回数が 1 ずれる
+ * - targetReps 回目を回しきったら自動で停止し、onReach を 1 度だけ呼ぶ
  */
 export function createRepCounter({ phases, targetReps = 0, onUpdate, onReach }) {
   const cycle = phases.reduce((a, p) => a + p.sec, 0);
@@ -228,6 +230,9 @@ export function createRepCounter({ phases, targetReps = 0, onUpdate, onReach }) 
   /** 目標に達する瞬間（= 次のレップの先頭）以降は刻まない */
   const overTarget = (sec) => targetReps > 0 && cycle > 0 && sec >= cycle * targetReps;
 
+  /** 回りきったレップ数（進行中のレップは含まない） */
+  const doneReps = (elapsed) => (cycle > 0 ? Math.floor(elapsed / cycle) : 0);
+
   function stop() {
     timer.stop();
     wakeLock.release();
@@ -235,15 +240,18 @@ export function createRepCounter({ phases, targetReps = 0, onUpdate, onReach }) 
 
   timer = createTimer({
     onTick(elapsed) {
-      const reps = cycle > 0 ? Math.floor(elapsed / cycle) : 0;
-      const progress = cycle > 0 ? (elapsed % cycle) / cycle : 0;
-      onUpdate({ reps, progress, phase: phaseAt(elapsed), elapsed });
-      if (!reached && targetReps > 0 && reps >= targetReps) {
+      const done = doneReps(elapsed);
+      if (!reached && targetReps > 0 && done >= targetReps) {
+        // 目標の回目を回しきった瞬間。数字は目標のまま、リングは満ちたままで止める
         reached = true;
+        onUpdate({ rep: targetReps, progress: 1, phase: phases[phases.length - 1], elapsed });
         stop();
         audio.goal();
         onReach?.(targetReps);
+        return;
       }
+      const progress = cycle > 0 ? (elapsed % cycle) / cycle : 0;
+      onUpdate({ rep: done + 1, progress, phase: phaseAt(elapsed), elapsed });
     },
     onSecond(sec) {
       if (overTarget(sec)) return;
@@ -267,8 +275,9 @@ export function createRepCounter({ phases, targetReps = 0, onUpdate, onReach }) 
     get running() {
       return timer.running;
     },
+    /** 回りきったレップ数。手動で終えたときの既定値に使う（停止後は 0 を返すため停止前に読む） */
     reps() {
-      return cycle > 0 ? Math.floor(timer.elapsed() / cycle) : 0;
+      return doneReps(timer.elapsed());
     },
   };
 }
