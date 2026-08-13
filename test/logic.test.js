@@ -325,3 +325,41 @@ test('記録 id は日付・種目ごとに連番になる', () => {
   assert.equal(L.nextRecordId(records, '2026-08-12', 'pushup'), '2026-08-12-pushup-2');
   assert.equal(L.nextRecordId(records, '2026-08-12', 'squat'), '2026-08-12-squat-1');
 });
+
+// ────────────────────────────────────────────────────────────
+// 進捗カレンダー
+// ────────────────────────────────────────────────────────────
+
+test('日毎の実施種目数は同日の同種目を重複カウントしない', () => {
+  const data = makeData({
+    records: [
+      rec('2026-08-12', 'pushup', 3, [20, 20], { sets: 2, value: 20 }, true),
+      rec('2026-08-12', 'pushup', 3, [10, 10], { sets: 2, value: 20 }, false),
+      rec('2026-08-12', 'squat', 2, [30], { sets: 1, value: 30 }, true),
+      rec('2026-08-13', 'pullup', 1, [5], { sets: 1, value: 5 }, true),
+      rec('2026-08-20', 'bridge', 1, [10], { sets: 1, value: 10 }, true),
+    ],
+  });
+  assert.deepEqual(L.dailyExerciseCounts(data, '2026-08-01', '2026-08-14'), {
+    '2026-08-12': 2,
+    '2026-08-13': 1,
+  });
+});
+
+test('月のずらしは年をまたぐ', () => {
+  assert.equal(L.shiftMonth('2026-08', 1), '2026-09');
+  assert.equal(L.shiftMonth('2026-01', -1), '2025-12');
+  assert.equal(L.shiftMonth('2026-12', 1), '2027-01');
+});
+
+test('月のマス目は週開始の設定に合わせて先頭を埋める', () => {
+  // 2026-08-01 は土曜日
+  const weeks = L.monthGrid('2026-08', 'mon');
+  assert.equal(weeks[0].length, 7);
+  assert.deepEqual(weeks[0], [null, null, null, null, null, '2026-08-01', '2026-08-02']);
+  const lastWeek = weeks[weeks.length - 1];
+  assert.ok(lastWeek.includes('2026-08-31'));
+
+  const weeksSun = L.monthGrid('2026-08', 'sun');
+  assert.deepEqual(weeksSun[0], [null, null, null, null, null, null, '2026-08-01']);
+});

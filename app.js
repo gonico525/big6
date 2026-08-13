@@ -623,6 +623,7 @@ function finishRun(sets = null) {
 
 function renderProgress() {
   const today = L.toDateStr();
+  const month = view.month ?? today.slice(0, 7);
   const head = ['<div></div>', ...Array.from({ length: 10 }, (_, i) => `<div class="head">${i + 1}</div>`)].join('');
   const rows = data.exercises
     .map((e) => {
@@ -642,6 +643,7 @@ function renderProgress() {
 
   return `
   ${topbar('進捗')}
+  ${renderCalendar(month, today)}
   <div class="card">
     <div class="grid-table">${head}${rows}</div>
     <div class="legend">
@@ -657,6 +659,56 @@ function renderProgress() {
     <button class="btn small" data-act="add-record">記録を追加</button>
   </div>
   ${sel}`;
+}
+
+/** 実施した種目数（0〜6）を色の濃さの段階に割り当てる */
+function calLevel(count) {
+  if (!count) return 0;
+  if (count <= 2) return 1;
+  if (count <= 4) return 2;
+  return 3;
+}
+
+function renderCalendar(month, today) {
+  const weekStart = data.settings.weekStart;
+  const weeks = L.monthGrid(month, weekStart);
+  const from = weeks[0].find(Boolean) ?? `${month}-01`;
+  const to = [...weeks[weeks.length - 1]].reverse().find(Boolean) ?? from;
+  const counts = L.dailyExerciseCounts(data, from, to);
+  const [y, m] = month.split('-').map(Number);
+  const order = [...WEEKDAYS.slice(WEEKDAYS.findIndex(([k]) => k === weekStart)), ...WEEKDAYS.slice(0, WEEKDAYS.findIndex(([k]) => k === weekStart))];
+  const head = order.map(([, label]) => `<div class="cal-head">${label}</div>`).join('');
+  const cells = weeks
+    .map((week) =>
+      week
+        .map((date) => {
+          if (!date) return `<div class="cal-cell empty"></div>`;
+          const n = counts[date] ?? 0;
+          return `<div class="cal-cell${date > today ? ' future' : ''}" data-level="${calLevel(n)}" data-today="${date === today}"
+            title="${date}　${n}種目">
+            <span class="d">${Number(date.slice(8))}</span>${n ? `<span class="n">${n}</span>` : ''}
+          </div>`;
+        })
+        .join('')
+    )
+    .join('');
+
+  return `
+  <div class="card">
+    <div class="row between" style="margin-bottom:8px">
+      <button class="btn ghost small" data-act="cal-prev">‹</button>
+      <b>${y}年${m}月</b>
+      <button class="btn ghost small" data-act="cal-next">›</button>
+    </div>
+    <div class="cal-table">${head}${cells}</div>
+    <div class="legend">
+      <span><i style="background:var(--lv0)"></i>0種目</span>
+      <span><i style="background:var(--lv1)"></i>1〜2種目</span>
+      <span><i style="background:var(--lv2)"></i>3〜4種目</span>
+      <span><i style="background:var(--lv3)"></i>5〜6種目</span>
+    </div>
+    <div class="grid-hint small muted">毎日やる必要はありません。週の中でどれだけ実施できたかの目安です</div>
+  </div>`;
 }
 
 function historyPanel(ex, step) {
@@ -1161,7 +1213,15 @@ const actions = {
 
   // 進捗
   cell: (el) => {
-    view = { name: 'progress', ex: el.dataset.ex, step: num(el.dataset.step, 1) };
+    view = { ...view, name: 'progress', ex: el.dataset.ex, step: num(el.dataset.step, 1) };
+    render();
+  },
+  'cal-prev': () => {
+    view = { ...view, month: L.shiftMonth(view.month ?? L.toDateStr().slice(0, 7), -1) };
+    render();
+  },
+  'cal-next': () => {
+    view = { ...view, month: L.shiftMonth(view.month ?? L.toDateStr().slice(0, 7), 1) };
     render();
   },
   'add-record': () => {

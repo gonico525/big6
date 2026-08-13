@@ -298,6 +298,33 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 .grid-hint { margin-top: 10px; }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line); margin-right: 5px; vertical-align: -1px; }
 
+/* ── 進捗カレンダー ─────────────────────── */
+.cal-table { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.cal-head { min-width: 0; font-size: 11px; color: var(--muted); text-align: center; padding-bottom: 2px; }
+.cal-cell {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--lv0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+.cal-cell.empty { border-color: transparent; }
+.cal-cell.future { opacity: .4; }
+.cal-cell[data-level="1"] { background: var(--lv1); }
+.cal-cell[data-level="2"] { background: var(--lv2); }
+.cal-cell[data-level="3"] { background: var(--lv3); }
+.cal-cell .d { font-size: 10px; color: var(--muted); line-height: 1; }
+.cal-cell .n { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
+.cal-cell[data-level="2"] .d, .cal-cell[data-level="2"] .n,
+.cal-cell[data-level="3"] .d, .cal-cell[data-level="3"] .n { color: #fff; }
+.cal-cell[data-today="true"] { border-color: var(--text); border-width: 2px; }
+
 .hist-row {
   display: block;
   width: 100%;
