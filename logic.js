@@ -324,6 +324,45 @@ export function lastDateOf(data, ex) {
 }
 
 // ────────────────────────────────────────────────────────────
+// 進捗カレンダー（日毎の実施状況）
+// ────────────────────────────────────────────────────────────
+
+/** from〜to（'YYYY-MM-DD'、両端含む）の日付ごとの実施種目数（同日に同種目が複数記録されても1）*/
+export function dailyExerciseCounts(data, from, to) {
+  const byDate = new Map();
+  for (const r of data.records) {
+    if (r.date < from || r.date > to) continue;
+    if (!byDate.has(r.date)) byDate.set(r.date, new Set());
+    byDate.get(r.date).add(r.exercise);
+  }
+  const out = {};
+  for (const [date, set] of byDate) out[date] = set.size;
+  return out;
+}
+
+/** 'YYYY-MM' を月単位でずらす */
+export function shiftMonth(yearMonth, delta) {
+  const [y, m] = yearMonth.split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/** 'YYYY-MM' の週ごとのマス目（週開始は設定に従う）。月外の日は null */
+export function monthGrid(yearMonth, weekStart = 'mon') {
+  const [y, m] = yearMonth.split('-').map(Number);
+  const startIdx = WEEKDAY_INDEX[weekStart] ?? 1;
+  const first = new Date(y, m - 1, 1);
+  const lastDate = new Date(y, m, 0).getDate();
+  const lead = (first.getDay() - startIdx + 7) % 7;
+  const days = Array(lead).fill(null);
+  for (let d = 1; d <= lastDate; d++) days.push(toDateStr(new Date(y, m - 1, d)));
+  while (days.length % 7 !== 0) days.push(null);
+  const weeks = [];
+  for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7));
+  return weeks;
+}
+
+// ────────────────────────────────────────────────────────────
 // 画面向けのまとめ
 // ────────────────────────────────────────────────────────────
 
