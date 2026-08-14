@@ -128,3 +128,12 @@ Service Worker は stale-while-revalidate で動く。キャッシュを返し�
   （ハンドスタンド Step1〜3）
 - **`mode: "free"`**: レップを 4 フェーズに分解できない動作
   （ブリッジ Step7・8 のウォール・ウォーキング）
+
+## ライセンス
+
+コード（`app.js` / `logic.js` / `timer.js` / `store.js` / `pwa.js` / `sw.js` など）は
+[MIT License](LICENSE) の下で公開する。
+
+`standards.json` のステップ名・説明文は、プリズナートレーニング（Convict Conditioning,
+Paul Wade 著）のフォーム要点を自分の言葉で要約したもの。トレーニング内容・メソッド自体の
+権利は原著に帰属する。
