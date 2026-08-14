@@ -128,3 +128,7 @@ Service Worker は stale-while-revalidate で動く。キャッシュを返し�
   （ハンドスタンド Step1〜3）
 - **`mode: "free"`**: レップを 4 フェーズに分解できない動作
   （ブリッジ Step7・8 のウォール・ウォーキング）
+
+## ライセンス
+
+[MIT License](LICENSE)

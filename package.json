@@ -2,6 +2,7 @@
   "name": "prisoner-training-app",
   "version": "0.4.0",
   "private": true,
+  "license": "MIT",
   "description": "プリズナートレーニング継続アプリ（個人利用・静的サイト）",
   "type": "module",
   "scripts": {
