@@ -20,6 +20,7 @@ export function defaultSettings() {
     minWeeksPerStep: 4,
     demoteThreshold: 2,
     weekStart: 'mon',
+    theme: 'system',
     tempo: { up: 2, down: 2, holdTop: 1, holdBottom: 1 },
     sound: { enabled: true, volume: 0.7 },
     restBeepInterval: 10,

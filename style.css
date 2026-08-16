@@ -19,8 +19,9 @@
   --radius: 14px;
 }
 
+/* テーマ: 設定で明示的に選ばれていなければ端末の設定（prefers-color-scheme）に従う */
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not([data-theme="dark"]) {
     --bg: #f3f5f8;
     --surface: #ffffff;
     --surface-2: #eef1f6;
@@ -31,6 +32,17 @@
     --lv2: #5b9be0;
     --lv3: #2a56a8;
   }
+}
+:root[data-theme="light"] {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --line: #d8dee7;
+  --text: #1a2029;
+  --muted: #66717f;
+  --lv1: #bcd6f0;
+  --lv2: #5b9be0;
+  --lv3: #2a56a8;
 }
 
 * { box-sizing: border-box; }
