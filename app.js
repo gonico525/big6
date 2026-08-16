@@ -58,6 +58,11 @@ function save() {
   store.save(data);
 }
 
+/** テーマ設定を <html data-theme> に反映する（実際の配色切り替えは style.css 側） */
+function applyTheme() {
+  document.documentElement.dataset.theme = data.settings.theme ?? 'system';
+}
+
 function go(name, params = {}) {
   if (run && name !== 'run') stopRun();
   view = { name, ...params };
@@ -87,6 +92,7 @@ async function boot() {
     data = createInitialData(template);
     save();
   }
+  applyTheme();
   audio.configure(data.settings.sound);
   wakeLock.bindVisibility(() => !!run && (run.countdown?.running || run.counter?.running || run.rest?.running));
   pwa.init((s) => {
@@ -857,6 +863,16 @@ function renderSettings() {
   return `
   ${topbar('設定')}
 
+  <details class="group" open><summary>画面</summary><div class="body">
+    <label class="field"><span>テーマ</span>
+      <select data-set="theme">
+        <option value="system" ${s.theme === 'system' ? 'selected' : ''}>端末の設定に合わせる</option>
+        <option value="light" ${s.theme === 'light' ? 'selected' : ''}>ライト</option>
+        <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>ダーク</option>
+      </select>
+    </label>
+  </div></details>
+
   <details class="group" open><summary>進み方</summary><div class="body">
     ${SETTING_FIELDS.slice(0, 7).map(field).join('')}
     <label class="field"><span>週の開始曜日</span>
@@ -1303,8 +1319,9 @@ document.addEventListener('change', (ev) => {
   }
   if (el.dataset.set) {
     const key = el.dataset.set;
-    const v = key === 'weekStart' ? el.value : num(el.value, defaultSettings()[key]);
+    const v = key === 'weekStart' || key === 'theme' ? el.value : num(el.value, defaultSettings()[key]);
     data.settings[key] = v;
+    if (key === 'theme') applyTheme();
     save();
     return;
   }
