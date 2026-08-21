@@ -111,6 +111,13 @@ boot().catch((e) => {
 // 描画
 // ────────────────────────────────────────────────────────────
 
+/** 実行画面以外の全ページで統一するタブ（仕様書外・UI 統一のための定数） */
+const NAV_TABS = [
+  ['home', 'ホーム'],
+  ['progress', '進捗'],
+  ['settings', '設定'],
+];
+
 function render() {
   const views = {
     home: renderHome,
@@ -119,7 +126,9 @@ function render() {
     settings: renderSettings,
     standards: renderStandardsEditor,
   };
-  app.innerHTML = (views[view.name] ?? renderHome)();
+  const showNav = view.name !== 'run';
+  app.classList.toggle('has-nav', showNav);
+  app.innerHTML = (views[view.name] ?? renderHome)() + (showNav ? bottomNav(view.name) : '');
   renderModal();
   if (view.name === 'run') afterRunRender();
 }
@@ -128,11 +137,27 @@ function renderModal() {
   modalRoot.innerHTML = modal ? `<div class="modal-back" data-act="modal-back"><div class="modal">${modal()}</div></div>` : '';
 }
 
+/** ホーム・進捗・設定へ移動する、全ページ共通の下部ナビ */
+function bottomNav(active) {
+  return `<nav class="bottom-nav">
+    ${NAV_TABS.map(
+      ([name, label]) =>
+        `<button class="nav-btn ${name === active ? 'active' : ''}" data-act="${name}" aria-current="${name === active}">${label}</button>`
+    ).join('')}
+  </nav>`;
+}
+
+/** 実行画面のヘッダ。中断ボタンを右に置ける唯一の画面のため専用にしている */
 function topbar(title, right = '') {
   return `<div class="topbar">
     <button class="btn ghost small" data-act="home">‹ ホーム</button>
     <h1>${esc(title)}</h1>${right}
   </div>`;
+}
+
+/** 進捗・設定・ステップマスタのヘッダ。ホームへの導線は下部ナビが兼ねる */
+function pageHeader(title) {
+  return `<div class="topbar"><h1>${esc(title)}</h1></div>`;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -149,9 +174,6 @@ function renderHome() {
   return `
   <div class="topbar">
     <div class="week">今週<b>${L.weekTotal(data, today)}</b>回</div>
-    <div class="spacer"></div>
-    <button class="btn ghost small" data-act="progress">進捗</button>
-    <button class="btn ghost small" data-act="settings">設定</button>
   </div>
   ${pwaState.updateReady ? updateBanner() : ''}
   ${data.pending ? pendingBanner() : ''}
@@ -648,7 +670,7 @@ function renderProgress() {
   const sel = view.ex ? historyPanel(view.ex, view.step) : '';
 
   return `
-  ${topbar('進捗')}
+  ${pageHeader('進捗')}
   ${renderCalendar(month, today)}
   <div class="card">
     <div class="grid-table">${head}${rows}</div>
@@ -861,7 +883,7 @@ function renderSettings() {
         min="${min}" max="${max}" data-set="${key}" value="${esc(s[key])}"></label>`;
 
   return `
-  ${topbar('設定')}
+  ${pageHeader('設定')}
 
   <details class="group" open><summary>画面</summary><div class="body">
     <label class="field"><span>テーマ</span>
@@ -972,7 +994,7 @@ function appSection() {
 function renderStandardsEditor() {
   const openId = view.ex ?? data.exercises[0]?.id;
   return `
-  ${topbar('ステップマスタ')}
+  ${pageHeader('ステップマスタ')}
   <p class="small muted">書籍を参照して基準値を入力してください。入力した値は自動で保存されます。</p>
   ${data.exercises.map((e) => stdGroup(e, e.id === openId)).join('')}
   <div style="height:32px"></div>`;
@@ -1362,5 +1384,45 @@ document.addEventListener('keydown', (ev) => {
   if (ev.key === 'Enter' && ev.target.tagName === 'INPUT') ev.target.blur();
   if (ev.key === 'Escape') closeTip();
 });
+
+// ────────────────────────────────────────────────────────────
+// 左右スワイプでのページ切り替え（ホーム／進捗／設定のみ）
+// ────────────────────────────────────────────────────────────
+
+const SWIPE_ORDER = NAV_TABS.map(([name]) => name);
+const SWIPE_MIN_DISTANCE = 60;
+const SWIPE_MAX_OFF_AXIS_RATIO = 0.6; // 縦移動が横移動の 6 割を超えたらスクロール操作とみなす
+
+let touchStart = null;
+
+document.addEventListener(
+  'touchstart',
+  (ev) => {
+    touchStart = null;
+    if (modal || !SWIPE_ORDER.includes(view.name)) return;
+    // range/number などの操作中はドラッグをページ切り替えとして扱わない
+    if (ev.target.closest('input, select, textarea')) return;
+    const t = ev.touches[0];
+    touchStart = { x: t.clientX, y: t.clientY };
+  },
+  { passive: true }
+);
+
+document.addEventListener(
+  'touchend',
+  (ev) => {
+    if (!touchStart) return;
+    const t = ev.changedTouches[0];
+    const dx = t.clientX - touchStart.x;
+    const dy = t.clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) < SWIPE_MIN_DISTANCE || Math.abs(dy) > Math.abs(dx) * SWIPE_MAX_OFF_AXIS_RATIO) return;
+    const idx = SWIPE_ORDER.indexOf(view.name);
+    if (idx < 0) return;
+    if (dx < 0 && idx < SWIPE_ORDER.length - 1) go(SWIPE_ORDER[idx + 1]);
+    else if (dx > 0 && idx > 0) go(SWIPE_ORDER[idx - 1]);
+  },
+  { passive: true }
+);
 
 window.addEventListener('beforeunload', () => wakeLock.release());
