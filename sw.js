@@ -79,13 +79,16 @@ self.addEventListener('fetch', (ev) => {
       const cache = await caches.open(CACHE);
       const cached = await cache.match(req, { ignoreSearch: true });
 
-      // 裏で取り直してキャッシュを更新する（結果は次回の起動で使われる）
+      // 裏で取り直してキャッシュを更新する（結果は次回の起動で使われる）。
+      // cached を先に返す経路では respondWith の Promise がそこで解決してしまい、
+      // waitUntil で保護しないとこの再取得が完了する前に Worker が終了させられうる
       const fresh = fetch(req)
         .then((res) => {
           if (cacheable(res)) cache.put(req, res.clone());
           return res;
         })
         .catch(() => null);
+      ev.waitUntil(fresh);
 
       // 最新を明示的に求められた場合はネットワーク優先。取れなければキャッシュに戻る
       if (req.cache === 'no-cache' || req.cache === 'reload') {
