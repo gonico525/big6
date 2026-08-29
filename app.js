@@ -452,12 +452,12 @@ function runCounting(r) {
   const num = (v) => Math.round(v * 1000) / 1000;
   const d = L.ringPath(sides);
   const head = L.ringPoint(sides, 0);
-  // フェーズの境目（六角形なら角の位置に一致する）。保持やテンポ 1 区間だけなら出さない
+  // フェーズの境目。角が目印になる六角形のときだけ置く（円には出さない）
   const marks =
-    phases.length > 1
+    sides >= 3 && phases.length > 1
       ? L.phaseMarks(phases)
           .map((t) => L.ringPoint(sides, t))
-          .map((p) => `<circle class="mark" cx="${num(p.x)}" cy="${num(p.y)}" r="2.2"></circle>`)
+          .map((p) => `<circle class="mark" cx="${num(p.x)}" cy="${num(p.y)}" r="1.6"></circle>`)
           .join('')
       : '';
 
@@ -468,8 +468,7 @@ function runCounting(r) {
         <path class="track" d="${d}"></path>
         <path class="bar" id="ring-bar" d="${d}" stroke-dasharray="${length}" stroke-dashoffset="${length}"></path>
         ${marks}
-        <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="4.5"></circle>
-        <circle class="dot-core" id="ring-dot-core" cx="${num(head.x)}" cy="${num(head.y)}" r="1.6"></circle>
+        <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="1.5"></circle>
       </svg>
       <div class="inner">
         <div class="count" id="ring-count">${isHold ? 0 : 1}</div>
@@ -574,7 +573,6 @@ function startCounter() {
   const r = run;
   const bar = $('#ring-bar');
   const dot = $('#ring-dot');
-  const dotCore = $('#ring-dot-core');
   const count = $('#ring-count');
   const phaseEl = $('#ring-phase');
   const { phases, sides, length } = ringSpec(r);
@@ -584,10 +582,9 @@ function startCounter() {
     const offset = String(length * (1 - p));
     if (bar) bar.style.strokeDashoffset = offset;
     const { x, y } = L.ringPoint(sides, p);
-    for (const el of [dot, dotCore]) {
-      if (!el) continue;
-      el.setAttribute('cx', x);
-      el.setAttribute('cy', y);
+    if (dot) {
+      dot.setAttribute('cx', x);
+      dot.setAttribute('cy', y);
     }
     if (count) count.textContent = String(value);
     if (phaseEl) phaseEl.textContent = label ?? '';
