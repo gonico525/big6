@@ -295,12 +295,12 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
     drop-shadow(0 0 10px var(--neon-glow));
 }
 .ring .mark { fill: var(--muted); opacity: .5; }
-/* 先頭を走る点。太さは線と同じ（r 1.5 = stroke-width 3）で、白く強めに光らせる */
+/* 先頭を走る丸。中心に白い芯を重ねる */
 .ring .dot {
-  fill: #fff;
-  filter: drop-shadow(0 0 2px var(--neon-glow)) drop-shadow(0 0 6px var(--neon-glow))
-    drop-shadow(0 0 12px var(--neon-glow));
+  fill: var(--neon);
+  filter: drop-shadow(0 0 3px var(--neon-glow)) drop-shadow(0 0 8px var(--neon-glow));
 }
+.ring .dot-core { fill: #fff; }
 .ring .inner {
   position: absolute;
   inset: 0;

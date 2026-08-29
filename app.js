@@ -468,7 +468,8 @@ function runCounting(r) {
         <path class="track" d="${d}"></path>
         <path class="bar" id="ring-bar" d="${d}" stroke-dasharray="${length}" stroke-dashoffset="${length}"></path>
         ${marks}
-        <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="1.5"></circle>
+        <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="4.5"></circle>
+        <circle class="dot-core" id="ring-dot-core" cx="${num(head.x)}" cy="${num(head.y)}" r="1.6"></circle>
       </svg>
       <div class="inner">
         <div class="count" id="ring-count">${isHold ? 0 : 1}</div>
@@ -573,6 +574,7 @@ function startCounter() {
   const r = run;
   const bar = $('#ring-bar');
   const dot = $('#ring-dot');
+  const dotCore = $('#ring-dot-core');
   const count = $('#ring-count');
   const phaseEl = $('#ring-phase');
   const { phases, sides, length } = ringSpec(r);
@@ -582,9 +584,10 @@ function startCounter() {
     const offset = String(length * (1 - p));
     if (bar) bar.style.strokeDashoffset = offset;
     const { x, y } = L.ringPoint(sides, p);
-    if (dot) {
-      dot.setAttribute('cx', x);
-      dot.setAttribute('cy', y);
+    for (const el of [dot, dotCore]) {
+      if (!el) continue;
+      el.setAttribute('cx', x);
+      el.setAttribute('cy', y);
     }
     if (count) count.textContent = String(value);
     if (phaseEl) phaseEl.textContent = label ?? '';
