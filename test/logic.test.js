@@ -363,3 +363,78 @@ test('月のマス目は週開始の設定に合わせて先頭を埋める', ()
   const weeksSun = L.monthGrid('2026-08', 'sun');
   assert.deepEqual(weeksSun[0], [null, null, null, null, null, null, '2026-08-01']);
 });
+
+// ────────────────────────────────────────────────────────────
+// 実行画面のリング形状（仕様書 5.5(a)）
+// ────────────────────────────────────────────────────────────
+
+const near = (a, b, tol = 1e-6) => assert.ok(Math.abs(a - b) < tol, `${a} ≈ ${b} ではない`);
+
+test('リングは1レップ6秒のテンポカウントのときだけ六角形になる', () => {
+  assert.equal(L.ringSides('rep', 6), 6);
+  assert.equal(L.ringSides('rep', 8), 0);
+  assert.equal(L.ringSides('rep', 0), 0);
+  assert.equal(L.ringSides('hold', 6), 0);
+  assert.equal(L.ringSides('free', 6), 0);
+});
+
+test('六角形の周長は半径の6倍、円の周長は2πr', () => {
+  near(L.ringLength(6), 6 * L.RING_R);
+  near(L.ringLength(0), 2 * Math.PI * L.RING_R);
+});
+
+test('六角形は真上の頂点から時計回りに1辺ずつ進む', () => {
+  // 始点と終点はどちらも真上
+  const start = L.ringPoint(6, 0);
+  near(start.x, L.RING_C);
+  near(start.y, L.RING_C - L.RING_R);
+  const end = L.ringPoint(6, 1);
+  near(end.x, start.x);
+  near(end.y, start.y);
+
+  // 1/6 で 1 つ目の頂点（右上）。時計回りなので x は増え、y も増える
+  const v1 = L.ringPoint(6, 1 / 6);
+  near(v1.x, L.RING_C + (L.RING_R * Math.sqrt(3)) / 2);
+  near(v1.y, L.RING_C - L.RING_R / 2);
+
+  // 1/12 はその辺の中点
+  const mid = L.ringPoint(6, 1 / 12);
+  near(mid.x, (start.x + v1.x) / 2);
+  near(mid.y, (start.y + v1.y) / 2);
+});
+
+test('円も真上から時計回りに進む', () => {
+  const start = L.ringPoint(0, 0);
+  near(start.x, L.RING_C);
+  near(start.y, L.RING_C - L.RING_R);
+
+  const quarter = L.ringPoint(0, 0.25); // 3 時の位置
+  near(quarter.x, L.RING_C + L.RING_R);
+  near(quarter.y, L.RING_C);
+
+  const half = L.ringPoint(0, 0.5); // 6 時の位置
+  near(half.x, L.RING_C);
+  near(half.y, L.RING_C + L.RING_R);
+});
+
+test('六角形の経路は頂点6つの閉じた多角形になる', () => {
+  const d = L.ringPath(6);
+  assert.equal((d.match(/M/g) ?? []).length, 1);
+  assert.equal((d.match(/L/g) ?? []).length, 5);
+  assert.ok(d.endsWith('Z'));
+  assert.ok(!L.ringPath(0).includes('L'));
+  assert.ok(L.ringPath(0).includes('A'));
+});
+
+test('フェーズの境目は既定テンポなら六角形の角に乗る', () => {
+  const phases = L.phaseSequence('down', { up: 2, down: 2, holdTop: 1, holdBottom: 1 });
+  const marks = L.phaseMarks(phases);
+  assert.equal(marks.length, 4);
+  near(marks[0], 0);
+  near(marks[1], 2 / 6);
+  near(marks[2], 3 / 6);
+  near(marks[3], 5 / 6);
+  // どの境目も 1/6 の倍数＝六角形の頂点に一致する
+  for (const t of marks) near(t * 6, Math.round(t * 6));
+  assert.deepEqual(L.phaseMarks([]), []);
+});

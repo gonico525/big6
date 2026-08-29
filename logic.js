@@ -496,3 +496,79 @@ export function nextRecordId(records, date, ex) {
   }
   return id;
 }
+
+// ────────────────────────────────────────────────────────────
+// 実行画面のリング形状（仕様書 5.5(a)）
+//
+// 円でも多角形でも「真上（12 時）から時計回りに 1 周する経路」として扱う。
+// 描画そのものは app.js の仕事だが、経路の形・長さ・進捗位置は導出できる値なのでここに置く。
+// 座標系は viewBox="0 0 120 120"。
+// ────────────────────────────────────────────────────────────
+
+export const RING_C = 60; // 中心
+export const RING_R = 50; // 外接円の半径（グローと丸がはみ出す分の余白を残してある）
+
+/** 1 レップが 6 秒なら六角形（1 辺 = 1 秒）。保持や 6 秒以外は円（辺の数 0） */
+export function ringSides(mode, cycleSec) {
+  return mode === 'rep' && cycleSec === 6 ? 6 : 0;
+}
+
+/** 頂点 i（真上から時計回り）の座標 */
+function ringVertex(sides, i) {
+  const a = -Math.PI / 2 + (2 * Math.PI * i) / sides;
+  return { x: RING_C + RING_R * Math.cos(a), y: RING_C + RING_R * Math.sin(a) };
+}
+
+/** 経路の全長。正多角形の 1 辺は 2R sin(π/n)（六角形なら R そのもの） */
+export function ringLength(sides) {
+  return sides >= 3 ? sides * 2 * RING_R * Math.sin(Math.PI / sides) : 2 * Math.PI * RING_R;
+}
+
+/** 経路の d 属性。円は半円 2 つでつなぐ（時計回り） */
+export function ringPath(sides) {
+  const n = (v) => Math.round(v * 1000) / 1000;
+  if (sides >= 3) {
+    const parts = [];
+    for (let i = 0; i < sides; i++) {
+      const p = ringVertex(sides, i);
+      parts.push(`${i === 0 ? 'M' : 'L'} ${n(p.x)} ${n(p.y)}`);
+    }
+    return `${parts.join(' ')} Z`;
+  }
+  const top = RING_C - RING_R;
+  const bottom = RING_C + RING_R;
+  const arc = `A ${RING_R} ${RING_R} 0 0 1`;
+  return `M ${RING_C} ${top} ${arc} ${RING_C} ${bottom} ${arc} ${RING_C} ${top}`;
+}
+
+/** 進捗 t（0..1）に対応する経路上の位置 */
+export function ringPoint(sides, t) {
+  const u = Math.min(1, Math.max(0, t));
+  if (sides >= 3) {
+    const seg = u * sides;
+    const i = Math.min(sides - 1, Math.floor(seg));
+    const f = seg - i;
+    const a = ringVertex(sides, i);
+    const b = ringVertex(sides, (i + 1) % sides);
+    return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+  }
+  const rad = 2 * Math.PI * u;
+  return { x: RING_C + RING_R * Math.sin(rad), y: RING_C - RING_R * Math.cos(rad) };
+}
+
+/**
+ * フェーズの境目の位置を 0..1 で返す。
+ * 各フェーズの開始点なので先頭の 0（＝レップの区切り）を含み、末尾の 1 は含まない。
+ * 既定テンポ（2-1-2-1）なら [0, 2/6, 3/6, 5/6] で、六角形の 4 つの角に一致する。
+ */
+export function phaseMarks(phases) {
+  const cycle = phases.reduce((a, p) => a + p.sec, 0);
+  if (cycle <= 0) return [];
+  const marks = [];
+  let t = 0;
+  for (const p of phases) {
+    marks.push(t / cycle);
+    t += p.sec;
+  }
+  return marks;
+}

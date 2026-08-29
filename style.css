@@ -16,6 +16,9 @@
   --lv1: #24425f;           /* 初級：淡いブルー */
   --lv2: #2f74c0;           /* 中級：標準ブルー */
   --lv3: #1b3f8f;           /* 上級：深いブルー */
+  --neon: #58d7ff;          /* 実行画面のリング（蛍光） */
+  --neon-dim: rgba(88, 215, 255, 0.20); /* リングのにじみ */
+  --ring-track: #232c38;    /* リングの下地 */
   --radius: 14px;
 }
 
@@ -31,6 +34,9 @@
     --lv1: #bcd6f0;
     --lv2: #5b9be0;
     --lv3: #2a56a8;
+    --neon: #1b93d6;
+    --neon-dim: rgba(27, 147, 214, 0.22);
+    --ring-track: #e2e8f1;
   }
 }
 :root[data-theme="light"] {
@@ -43,6 +49,9 @@
   --lv1: #bcd6f0;
   --lv2: #5b9be0;
   --lv3: #2a56a8;
+  --neon: #1b93d6;
+  --neon-dim: rgba(27, 147, 214, 0.22);
+  --ring-track: #e2e8f1;
 }
 
 * { box-sizing: border-box; }
@@ -272,9 +281,18 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 
 .ring-wrap { display: grid; place-items: center; padding: 18px 0; }
 .ring { position: relative; width: 240px; height: 240px; }
-.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.ring .track { fill: none; stroke: var(--surface-2); stroke-width: 12; }
-.ring .bar { fill: none; stroke: var(--primary); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset .06s linear; }
+/* 経路は真上始点・時計回りで組み立てるので svg 自体は回さない。overflow は発光がはみ出す分 */
+.ring svg { width: 100%; height: 100%; overflow: visible; }
+.ring .track { fill: none; stroke: var(--ring-track); stroke-width: 2; stroke-linejoin: round; }
+/* 太く半透明の層＋細く明るい芯で蛍光に見せる。毎フレーム描き替わる長い線に filter は載せない */
+.ring .glow { fill: none; stroke: var(--neon-dim); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+.ring .bar { fill: none; stroke: var(--neon); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.ring .mark { fill: var(--muted); opacity: .5; }
+.ring .dot {
+  fill: var(--neon);
+  filter: drop-shadow(0 0 3px var(--neon)) drop-shadow(0 0 8px var(--neon));
+}
+.ring .dot-core { fill: #fff; }
 .ring .inner {
   position: absolute;
   inset: 0;

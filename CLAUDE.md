@@ -21,7 +21,7 @@
 ## コマンド
 
 ```sh
-npm test        # logic.js のテスト（node:test、依存なし）。26 ケース
+npm test        # logic.js のテスト（node:test、依存なし）。35 ケース
 npm run serve   # 静的サーバ（python3 -m http.server 8000）
 ```
 
