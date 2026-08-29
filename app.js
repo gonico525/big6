@@ -466,7 +466,6 @@ function runCounting(r) {
     <div class="ring">
       <svg viewBox="0 0 120 120">
         <path class="track" d="${d}"></path>
-        <path class="glow" id="ring-glow" d="${d}" stroke-dasharray="${length}" stroke-dashoffset="${length}"></path>
         <path class="bar" id="ring-bar" d="${d}" stroke-dasharray="${length}" stroke-dashoffset="${length}"></path>
         ${marks}
         <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="4.5"></circle>
@@ -574,7 +573,6 @@ function goalReached() {
 function startCounter() {
   const r = run;
   const bar = $('#ring-bar');
-  const glow = $('#ring-glow');
   const dot = $('#ring-dot');
   const dotCore = $('#ring-dot-core');
   const count = $('#ring-count');
@@ -585,7 +583,6 @@ function startCounter() {
     const p = Math.min(1, Math.max(0, progress));
     const offset = String(length * (1 - p));
     if (bar) bar.style.strokeDashoffset = offset;
-    if (glow) glow.style.strokeDashoffset = offset;
     const { x, y } = L.ringPoint(sides, p);
     for (const el of [dot, dotCore]) {
       if (!el) continue;
