@@ -432,14 +432,44 @@ function runCountdown(r) {
   </div>`;
 }
 
+/**
+ * 実行中のリングの形。runCounting（描画）と startCounter（毎フレームの更新）で
+ * 同じ値を使う必要があるため、1 箇所にまとめてある。
+ */
+function ringSpec(r) {
+  const phases = r.mode === 'hold' ? [] : L.phaseSequence(r.startPhase, data.settings.tempo);
+  const sides = L.ringSides(
+    r.mode,
+    phases.reduce((a, p) => a + p.sec, 0),
+  );
+  // 経路長は SVG の属性にも毎フレームの計算にも使うので、丸めた同じ値を共有する
+  return { phases, sides, length: Math.round(L.ringLength(sides) * 1000) / 1000 };
+}
+
 function runCounting(r) {
   const isHold = r.mode === 'hold';
+  const { phases, sides, length } = ringSpec(r);
+  const num = (v) => Math.round(v * 1000) / 1000;
+  const d = L.ringPath(sides);
+  const head = L.ringPoint(sides, 0);
+  // フェーズの境目。角が目印になる六角形のときだけ置く（円には出さない）
+  const marks =
+    sides >= 3 && phases.length > 1
+      ? L.phaseMarks(phases)
+          .map((t) => L.ringPoint(sides, t))
+          .map((p) => `<circle class="mark" cx="${num(p.x)}" cy="${num(p.y)}" r="1.6"></circle>`)
+          .join('')
+      : '';
+
   return `
   <div class="ring-wrap">
     <div class="ring">
       <svg viewBox="0 0 120 120">
-        <circle class="track" cx="60" cy="60" r="52"></circle>
-        <circle class="bar" id="ring-bar" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle>
+        <path class="track" d="${d}"></path>
+        <path class="bar" id="ring-bar" d="${d}" stroke-dasharray="${length}" stroke-dashoffset="${length}"></path>
+        ${marks}
+        <circle class="dot" id="ring-dot" cx="${num(head.x)}" cy="${num(head.y)}" r="4.5"></circle>
+        <circle class="dot-core" id="ring-dot-core" cx="${num(head.x)}" cy="${num(head.y)}" r="1.6"></circle>
       </svg>
       <div class="inner">
         <div class="count" id="ring-count">${isHold ? 0 : 1}</div>
@@ -543,12 +573,22 @@ function goalReached() {
 function startCounter() {
   const r = run;
   const bar = $('#ring-bar');
+  const dot = $('#ring-dot');
+  const dotCore = $('#ring-dot-core');
   const count = $('#ring-count');
   const phaseEl = $('#ring-phase');
-  const C = 2 * Math.PI * 52;
+  const { phases, sides, length } = ringSpec(r);
 
   const paint = (progress, value, label) => {
-    if (bar) bar.style.strokeDashoffset = String(C * (1 - Math.min(1, progress)));
+    const p = Math.min(1, Math.max(0, progress));
+    const offset = String(length * (1 - p));
+    if (bar) bar.style.strokeDashoffset = offset;
+    const { x, y } = L.ringPoint(sides, p);
+    for (const el of [dot, dotCore]) {
+      if (!el) continue;
+      el.setAttribute('cx', x);
+      el.setAttribute('cy', y);
+    }
     if (count) count.textContent = String(value);
     if (phaseEl) phaseEl.textContent = label ?? '';
   };
@@ -560,7 +600,6 @@ function startCounter() {
       onReach: goalReached,
     });
   } else {
-    const phases = L.phaseSequence(r.startPhase, data.settings.tempo);
     if (!phases.length) {
       // テンポがすべて 0 の場合はカウントできない
       r.phase = 'confirm';
