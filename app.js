@@ -350,6 +350,18 @@ function phaseAfterSet(r) {
   return r.sets.length >= (r.target.sets ?? 1) ? 'done' : 'idle';
 }
 
+/** 次のセット（または片側種目の逆側）のカウント・入力を開始する */
+function beginNextSet(r) {
+  audio.unlock();
+  if (r.mode === 'free') {
+    r.confirmValue = r.target.value ?? 0;
+    r.phase = 'confirm';
+  } else {
+    // 構える時間を作るため、カウントの前に秒読みを挟む
+    r.phase = 'countdown';
+  }
+}
+
 function renderRun() {
   const r = run;
   if (!r) return renderHome();
@@ -453,11 +465,13 @@ function runConfirm(r, u) {
 }
 
 function runRest(r) {
+  const hasMore = phaseAfterSet(r) !== 'done';
   return `
   <div class="card">
     <div class="muted" style="text-align:center">休憩</div>
     <div class="rest-clock" id="rest-clock">00:00</div>
-    <button class="btn big block primary" data-act="rest-end">次のセットへ</button>
+    <button class="btn big block primary" data-act="rest-end">${hasMore ? '次のセットへ' : '完了画面へ'}</button>
+    ${r.sets.length > 0 ? `<button class="btn ghost small block" data-act="rest-finish">ここで終了</button>` : ''}
   </div>`;
 }
 
@@ -601,7 +615,7 @@ function commitValue(value) {
     r.sets.push(value);
   }
   savePending();
-  r.phase = phaseAfterSet(r);
+  r.phase = phaseAfterSet(r) === 'done' ? 'done' : 'rest';
   render();
 }
 
@@ -1191,14 +1205,7 @@ const actions = {
 
   // 実行
   start: () => {
-    audio.unlock();
-    if (run.mode === 'free') {
-      run.confirmValue = run.target.value ?? 0;
-      run.phase = 'confirm';
-    } else {
-      // 構える時間を作るため、カウントの前に秒読みを挟む
-      run.phase = 'countdown';
-    }
+    beginNextSet(run);
     render();
   },
   'countdown-cancel': () => {
@@ -1236,8 +1243,17 @@ const actions = {
   'rest-end': () => {
     run.rest?.stop();
     run.rest = null;
-    run.phase = phaseAfterSet(run);
+    if (phaseAfterSet(run) === 'done') {
+      run.phase = 'done';
+    } else {
+      beginNextSet(run);
+    }
     render();
+  },
+  'rest-finish': () => {
+    run.rest?.stop();
+    run.rest = null;
+    finishRun();
   },
   'add-set': () => {
     run.phase = 'idle';
