@@ -13,9 +13,9 @@
   --danger: #e2615c;
   --ok: #55b98a;
   --lv0: transparent;
-  --lv1: #24425f;           /* 初級：淡いブルー */
-  --lv2: #2f74c0;           /* 中級：標準ブルー */
-  --lv3: #1b3f8f;           /* 上級：深いブルー */
+  --lv1: #24425f;           /* 初級：暗く沈んだブルー */
+  --lv2: #2f5f9e;           /* 中級：中間の明るさのブルー */
+  --lv3: #4f8ef7;           /* 上級：最も明るいブルー */
   --neon: #58d7ff;          /* 実行画面のリング（蛍光） */
   --neon-glow: #58d7ff;     /* リングのぼかし。明るい背景では弱める */
   --ring-track: #232c38;    /* リングの下地 */
@@ -386,8 +386,8 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 .cal-cell[data-level="3"] { background: var(--lv3); }
 .cal-cell .d { font-size: 10px; color: var(--muted); line-height: 1; }
 .cal-cell .n { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
-.cal-cell[data-level="2"] .d, .cal-cell[data-level="2"] .n,
-.cal-cell[data-level="3"] .d, .cal-cell[data-level="3"] .n { color: #fff; }
+.cal-cell[data-level="2"] .d, .cal-cell[data-level="2"] .n { color: #fff; }
+.cal-cell[data-level="3"] .d, .cal-cell[data-level="3"] .n { color: var(--bg); }
 .cal-cell[data-today="true"] { border-color: var(--text); border-width: 2px; }
 
 .hist-row {
