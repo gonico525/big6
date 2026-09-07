@@ -312,6 +312,31 @@ label.field > span { display: block; font-size: 13px; color: var(--muted); margi
 .ring .phase { font-size: 17px; color: var(--muted); margin-top: 8px; }
 .ring .unit { font-size: 14px; color: var(--muted); }
 
+/* 難易度の見取り図（セット開始前に出す、現在ステップの級別基準と次ステップ） */
+.ladder { margin-top: 8px; }
+.ladder-head { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.ladder .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+.ladder .item.current { color: var(--text); font-weight: 600; }
+.ladder .item .lv { display: flex; align-items: center; gap: 8px; }
+.ladder .item .now {
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ladder-next { padding-top: 10px; font-size: 13px; color: var(--muted); }
+
 .setlist { margin-top: 8px; }
 .setlist .item {
   display: flex;
