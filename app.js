@@ -419,6 +419,33 @@ function runIdle(r, u) {
     <button class="btn big block primary" data-act="start">${esc(label)}</button>
     ${doneSets || r.partial != null ? `<button class="btn block" data-act="rest">休憩する</button>` : ''}
     ${doneSets ? `<button class="btn block ${enough ? 'accent' : ''}" data-act="finish">ワークアウトを終了して記録</button>` : ''}
+  </div>
+  ${ladder(r)}`;
+}
+
+/**
+ * 現在ステップの初級〜上級の基準と次ステップの名前（仕様書 5.5）。
+ * 今の目標が難易度のどのあたりなのかを、セット開始前に一目で分かるようにする。
+ */
+function ladder(r) {
+  const o = L.stepOverview(data, r.ex, r.step);
+  const rows = o.levels
+    .map(
+      (l) => `<div class="item${l.current ? ' current' : ''}">
+        <span class="lv">${esc(l.name)}${l.current ? '<span class="now">いま</span>' : ''}</span>
+        <span>${esc(L.targetText(l.criteria, o.unit, o.perSide))}</span>
+      </div>`
+    )
+    .join('');
+
+  return `<div class="card ladder">
+    <div class="ladder-head">Step${r.step} の基準</div>
+    ${rows}
+    <div class="ladder-next">${
+      o.next
+        ? `次のステップ　<b>Step${o.next.step}　${esc(o.next.name)}</b>`
+        : '最終ステップです'
+    }</div>
   </div>`;
 }
 

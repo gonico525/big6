@@ -438,3 +438,52 @@ test('フェーズの境目は既定テンポなら六角形の角に乗る', ()
   for (const t of marks) near(t * 6, Math.round(t * 6));
   assert.deepEqual(L.phaseMarks([]), []);
 });
+
+// ────────────────────────────────────────────────────────────
+// 難易度の見取り図（仕様書 5.5）
+// ────────────────────────────────────────────────────────────
+
+test('見取り図は現在ステップの 3 級の基準と次ステップ名を返す', () => {
+  const data = makeData();
+  data.steps.pushup['3'].name = 'ニーリング・プッシュアップ';
+  data.steps.pushup['4'].name = 'ハーフ・プッシュアップ';
+  data.initialState.pushup = { step: 3, level: 2 };
+
+  const o = L.stepOverview(data, 'pushup');
+  assert.equal(o.step, 3);
+  assert.equal(o.unit, 'reps');
+  assert.equal(o.perSide, false);
+  assert.deepEqual(
+    o.levels.map((l) => [l.name, l.criteria]),
+    [
+      ['初級', { sets: 1, value: 30 }],
+      ['中級', { sets: 2, value: 20 }],
+      ['上級', { sets: 3, value: 25 }],
+    ]
+  );
+  // 現在の級（initialState の中級）にだけ印がつく
+  assert.deepEqual(o.levels.map((l) => l.current), [false, true, false]);
+  assert.deepEqual(o.next, { step: 4, name: 'ハーフ・プッシュアップ' });
+});
+
+test('見取り図：最終ステップでは次ステップを返さない', () => {
+  const data = makeData();
+  data.initialState.pushup = { step: 10, level: 1 };
+  assert.equal(L.stepOverview(data, 'pushup').next, null);
+});
+
+test('見取り図：未入力の級は基準を null にし、別ステップを見るときは級の印を出さない', () => {
+  const data = makeData();
+  data.steps.pushup['3'].levels[3] = { sets: null, value: null };
+  data.initialState.pushup = { step: 3, level: 1 };
+
+  const o = L.stepOverview(data, 'pushup');
+  assert.equal(o.levels[2].criteria, null);
+  assert.deepEqual(o.levels.map((l) => l.current), [true, false, false]);
+
+  // 現在ステップ以外を指定した場合（中断からの復帰でステップが変わっているとき）
+  const other = L.stepOverview(data, 'pushup', 5);
+  assert.equal(other.step, 5);
+  assert.deepEqual(other.levels.map((l) => l.current), [false, false, false]);
+  assert.deepEqual(other.next, { step: 6, name: 'Step6' });
+});

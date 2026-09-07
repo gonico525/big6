@@ -572,3 +572,33 @@ export function phaseMarks(phases) {
   }
   return marks;
 }
+
+// ────────────────────────────────────────────────────────────
+// 難易度の見取り図（仕様書 5.5）
+// ────────────────────────────────────────────────────────────
+
+/**
+ * 現在ステップの級別基準と、次ステップの名前を返す。
+ * 実行画面のセット開始前に「今どのくらいの難易度をやっているのか」を示すために使う。
+ * step を明示できるのは、中断復帰の途中でステップが変わった場合に
+ * 記録側のステップを正として表示するため（app.js の startRun を参照）。
+ */
+export function stepOverview(data, ex, step = currentStep(data, ex)) {
+  const std = getStandard(data, ex, step);
+  // 級は現在ステップにいるときだけ確定する（別のステップの基準を見ているときは印を出さない）
+  const level = step === currentStep(data, ex) ? simulate(data, ex).level : 0;
+  const levels = [1, 2, 3].map((l) => ({
+    level: l,
+    name: LEVEL_NAMES[l],
+    criteria: isLevelFilled(std, l) ? { sets: std.levels[l].sets, value: std.levels[l].value } : null,
+    current: l === level,
+  }));
+  const nextStd = getStandard(data, ex, step + 1);
+  return {
+    step,
+    unit: std?.unit ?? 'reps',
+    perSide: std?.perSide ?? false,
+    levels,
+    next: nextStd ? { step: step + 1, name: nextStd.name ?? `Step${step + 1}` } : null,
+  };
+}
