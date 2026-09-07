@@ -836,15 +836,15 @@ function historyPanel(ex, step) {
 }
 
 function historyRow(r) {
-  const u = L.unitLabel(r.unit);
-  const t = r.targetOfDay;
+  // 実績は各セットの値を並べるだけにする。行頭にセット数を置くと、
+  // 「2×30」で1セット分の目標を表しているように読め、続く実績値と二重に見えるため
   return `<button class="hist-row" data-act="edit-record" data-id="${esc(r.id)}">
     <div class="line1">
       <span class="date">${esc(r.date.slice(5).replace('-', '/'))}</span>
-      <span class="sets">${esc(r.sets.length)}×${esc(L.setsText(r.sets, r.perSide))}</span>
+      <span class="sets">${esc(L.setsText(r.sets, r.perSide))}</span>
       <span class="judge ${r.achieved ? 'ok' : 'ng'}">${r.achieved ? '達成' : '未達'}</span>
     </div>
-    <div class="line2">目標 ${esc(t ? `${t.sets}×${r.perSide ? '左右各' : ''}${t.value}${u}` : '—')}</div>
+    <div class="line2">目標 ${esc(L.targetText(r.targetOfDay, r.unit, r.perSide))}</div>
   </button>`;
 }
 
