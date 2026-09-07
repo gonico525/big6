@@ -479,7 +479,7 @@ export function targetText(target, unit, perSide) {
     : `${target.value}${u} × ${target.sets}セット`;
 }
 
-/** 「2×(10/9), (10/8)」 */
+/** 各セットの実績を並べる。「20, 18」／片側種目は「(10/9), (10/8)」 */
 export function setsText(sets, perSide) {
   if (!sets?.length) return '—';
   return sets.map((s) => (perSide || Array.isArray(s) ? `(${s[0]}/${s[1]})` : String(s))).join(', ');

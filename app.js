@@ -222,9 +222,9 @@ function quickStandardForm(s) {
   const cell = (lv) => `
     <div class="lv-row">
       <span class="lv-name">${L.LEVEL_NAMES[lv]}</span>
-      <input type="number" inputmode="numeric" placeholder="セット" data-quick="${s.id}:${s.step}:${lv}:sets" value="${std.levels?.[lv]?.sets ?? ''}">
-      <span class="times">×</span>
       <input type="number" inputmode="numeric" placeholder="${s.unit === 'sec' ? '秒' : '回'}" data-quick="${s.id}:${s.step}:${lv}:value" value="${std.levels?.[lv]?.value ?? ''}">
+      <span class="times">×</span>
+      <input type="number" inputmode="numeric" placeholder="セット" data-quick="${s.id}:${s.step}:${lv}:sets" value="${std.levels?.[lv]?.sets ?? ''}">
     </div>`;
   return `<div style="margin-top:12px">
     <div class="small muted" style="margin-bottom:6px">Step${s.step} ${esc(s.stepName)} の基準値</div>
@@ -892,8 +892,8 @@ function recordForm(rec) {
       <input type="text" id="f-sets" inputmode="numeric" placeholder="${perSide ? '10/9, 10/8' : '20, 20, 18'}" value="${esc(setsToInput(rec.sets, perSide))}">
     </label>
     <div class="grid2">
-      <label class="field"><span>目標セット数</span><input type="number" inputmode="numeric" id="f-tsets" value="${esc(rec.targetOfDay?.sets ?? '')}"></label>
       <label class="field"><span>目標${u}数${perSide ? '（片側）' : ''}</span><input type="number" inputmode="numeric" id="f-tvalue" value="${esc(rec.targetOfDay?.value ?? '')}"></label>
+      <label class="field"><span>目標セット数</span><input type="number" inputmode="numeric" id="f-tsets" value="${esc(rec.targetOfDay?.sets ?? '')}"></label>
     </div>
     <div class="row" style="margin-top:8px">
       <button class="btn primary" data-act="save-record" data-id="${esc(rec.id ?? '')}">保存</button>
@@ -1095,9 +1095,9 @@ function stdRow(ex, step) {
   const lv = (l) => `
     <div class="lv-row">
       <span class="lv-name">${L.LEVEL_NAMES[l]}</span>
-      <input type="number" inputmode="numeric" placeholder="セット" data-std="${key(`levels.${l}.sets`)}" value="${std.levels?.[l]?.sets ?? ''}">
-      <span class="times">×</span>
       <input type="number" inputmode="numeric" placeholder="${std.unit === 'sec' ? '秒' : '回'}" data-std="${key(`levels.${l}.value`)}" value="${std.levels?.[l]?.value ?? ''}">
+      <span class="times">×</span>
+      <input type="number" inputmode="numeric" placeholder="セット" data-std="${key(`levels.${l}.sets`)}" value="${std.levels?.[l]?.sets ?? ''}">
     </div>`;
   return `<div class="card" style="background:var(--surface-2)">
     <div class="row" style="margin-bottom:8px">
