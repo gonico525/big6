@@ -174,6 +174,8 @@ function renderHome() {
   return `
   <div class="topbar">
     <div class="week">今週<b>${L.weekTotal(data, today)}</b>回</div>
+    <div class="spacer"></div>
+    <button class="btn ghost small" data-act="warmup">ウォームアップ</button>
   </div>
   ${pwaState.updateReady ? updateBanner() : ''}
   ${data.pending ? pendingBanner() : ''}
@@ -311,6 +313,7 @@ function startRun(ex, { fromPending = false } = {}) {
 function baseRun(s) {
   const date = L.toDateStr();
   return {
+    kind: 'exercise',
     ex: s.id,
     name: s.name,
     step: s.step,
@@ -335,6 +338,29 @@ function baseRun(s) {
   };
 }
 
+/**
+ * ウォームアップを始める（仕様書 5.6）。
+ * 種目に紐づかない汎用タイマーなので目標も記録も持たず、実行画面の器（run）だけを借りる。
+ */
+function startWarmup() {
+  if (run) stopRun();
+  run = {
+    kind: 'warmup',
+    mode: 'rep', // 'rep'（テンポで刻む）| 'time'（時間を計る）。既定はテンポ
+    startPhase: 'down', // 汎用のため種目の開始フェーズは持たない
+    perSide: false,
+    sets: [], // { mode, value }。画面に出すだけで保存はしない
+    partial: null,
+    phase: 'idle',
+    countdown: null,
+    counter: null,
+    rest: null,
+  };
+  view = { name: 'run' };
+  render();
+  window.scrollTo(0, 0);
+}
+
 function stopRun() {
   run?.countdown?.stop();
   run?.counter?.stop();
@@ -345,6 +371,8 @@ function stopRun() {
 
 /** セットを確定したあと・休憩から戻ったあとに表示する画面 */
 function phaseAfterSet(r) {
+  // ウォームアップは目標セット数を持たないので、いつでも次のセットがある
+  if (r.kind === 'warmup') return 'idle';
   // 片側種目で左だけ終えている間は、まだそのセットの途中
   if (r.partial != null) return 'idle';
   return r.sets.length >= (r.target.sets ?? 1) ? 'done' : 'idle';
@@ -365,6 +393,7 @@ function beginNextSet(r) {
 function renderRun() {
   const r = run;
   if (!r) return renderHome();
+  if (r.kind === 'warmup') return renderWarmup(r);
   const u = L.unitLabel(r.unit);
 
   const bodies = {
@@ -527,8 +556,10 @@ function runRest(r) {
   <div class="card">
     <div class="muted" style="text-align:center">休憩</div>
     <div class="rest-clock" id="rest-clock">00:00</div>
-    <button class="btn big block primary" data-act="rest-end">${hasMore ? '次のセットへ' : '完了画面へ'}</button>
-    ${r.sets.length > 0 ? `<button class="btn ghost small block" data-act="rest-finish">ここで終了</button>` : ''}
+    <div class="stack">
+      <button class="btn big block primary" data-act="rest-end">${hasMore ? '次のセットへ' : '完了画面へ'}</button>
+      ${r.sets.length > 0 ? `<button class="btn ghost small block" data-act="rest-finish">ここで終了</button>` : ''}
+    </div>
   </div>`;
 }
 
@@ -559,6 +590,81 @@ function setList(r, u) {
     items.push(`<div class="item ${active ? 'active' : ''}"><span>${i + 1}セット目</span><span>${esc(text)}</span></div>`);
   }
   return `<div class="card setlist">${items.join('')}</div>`;
+}
+
+// ────────────────────────────────────────────────────────────
+// ウォームアップ（仕様書 5.6）
+//
+// 種目実行と同じ器（run / view.name === 'run'）で動かし、kind で振る舞いを分ける。
+// 目標を持たないので confirm（実績の確認）と done（目標セット数の到達）は通らず、
+// idle → countdown → counting → rest → countdown … を利用者が止めるまで繰り返す。
+// ────────────────────────────────────────────────────────────
+
+function renderWarmup(r) {
+  const bodies = {
+    countdown: () => runCountdown(r),
+    counting: () => (r.mode === 'time' ? warmupClock(r) : runCounting(r)),
+    rest: () => runRest(r),
+  };
+  const body = (bodies[r.phase] ?? (() => warmupIdle(r)))();
+
+  return `
+  ${topbar('ウォームアップ', `<button class="btn ghost small" data-act="abort">終了</button>`)}
+  <div class="card">
+    ${r.phase === 'idle' ? warmupModes(r) : ''}
+    <div class="run-tempo">${
+      r.mode === 'time'
+        ? '経過時間を計ります。終了は自分で押します'
+        : `テンポ ${esc(L.tempoText(r.startPhase, data.settings.tempo))}`
+    }</div>
+  </div>
+  ${body}
+  ${warmupSetList(r)}
+  `;
+}
+
+/** カウント方式の切り替え。セットの途中で変えられると数え方が混ざるため idle のときだけ出す */
+function warmupModes(r) {
+  const btn = (mode, label) =>
+    `<button class="btn small ${r.mode === mode ? 'primary' : 'ghost'}" style="flex:1"
+      data-act="warmup-mode" data-mode="${mode}" aria-pressed="${r.mode === mode}">${label}</button>`;
+  return `<div class="row" style="margin-bottom:12px">
+    ${btn('rep', 'テンポで刻む')}${btn('time', '時間を計る')}
+  </div>`;
+}
+
+function warmupIdle(r) {
+  const doneSets = r.sets.length;
+  return `
+  <div class="stack">
+    <button class="btn big block primary" data-act="start">${esc(setLabel(r))} スタート</button>
+    ${doneSets ? `<button class="btn block" data-act="rest">休憩する</button>` : ''}
+    ${doneSets ? `<button class="btn block" data-act="finish">ウォームアップを終了</button>` : ''}
+  </div>`;
+}
+
+/** 「時間を計る」モードの表示。休憩画面と同じ時計 1 つだけ */
+function warmupClock(r) {
+  return `
+  <div class="card">
+    <div class="muted" style="text-align:center">${esc(setLabel(r))}</div>
+    <div class="rest-clock" id="warmup-clock">00:00</div>
+    <button class="btn big block" data-act="stop">終了</button>
+  </div>`;
+}
+
+/** 終えたセットの一覧。保存しないため、画面を離れると消える */
+function warmupSetList(r) {
+  if (!r.sets.length) return '';
+  const items = r.sets
+    .map(
+      (v, i) =>
+        `<div class="item"><span>${i + 1}セット目</span><span>${
+          v.mode === 'time' ? esc(formatClock(v.value)) : `${esc(v.value)}回`
+        }</span></div>`
+    )
+    .join('');
+  return `<div class="card setlist">${items}</div>`;
 }
 
 function afterRunRender() {
@@ -597,16 +703,19 @@ function goalReached() {
   render();
 }
 
-function startCounter() {
-  const r = run;
+/**
+ * リングを毎フレーム書き換える関数を作る。
+ * 描画済みの DOM を掴むため、描画後（afterRunRender 以降）に呼ぶ。
+ */
+function ringPainter(r) {
   const bar = $('#ring-bar');
   const dot = $('#ring-dot');
   const dotCore = $('#ring-dot-core');
   const count = $('#ring-count');
   const phaseEl = $('#ring-phase');
-  const { phases, sides, length } = ringSpec(r);
+  const { sides, length } = ringSpec(r);
 
-  const paint = (progress, value, label) => {
+  return (progress, value, label) => {
     const p = Math.min(1, Math.max(0, progress));
     const offset = String(length * (1 - p));
     if (bar) bar.style.strokeDashoffset = offset;
@@ -619,6 +728,46 @@ function startCounter() {
     if (count) count.textContent = String(value);
     if (phaseEl) phaseEl.textContent = label ?? '';
   };
+}
+
+/** ウォームアップのカウント。目標がないので自動停止せず、利用者が「終了」を押すまで回る */
+function startWarmupCounter() {
+  const r = run;
+  if (r.mode === 'time') {
+    const el = $('#warmup-clock');
+    r.counter = createRestTimer({
+      interval: data.settings.restBeepInterval,
+      onUpdate: (elapsed) => {
+        if (el) el.textContent = formatClock(elapsed);
+      },
+    });
+    r.counter.start();
+    return;
+  }
+  const { phases } = ringSpec(r);
+  if (!phases.length) {
+    // テンポがすべて 0 の場合はテンポカウントできないので、時間を計る方へ退避する
+    r.mode = 'time';
+    render();
+    return;
+  }
+  const paint = ringPainter(r);
+  r.counter = createRepCounter({
+    phases,
+    targetReps: 0, // 目標なし。自動停止も到達音もしない
+    onUpdate: ({ rep, progress, phase }) => paint(progress, rep, phase.label),
+  });
+  r.counter.start();
+}
+
+function startCounter() {
+  const r = run;
+  if (r.kind === 'warmup') {
+    startWarmupCounter();
+    return;
+  }
+  const { phases } = ringSpec(r);
+  const paint = ringPainter(r);
 
   if (r.mode === 'hold') {
     r.counter = createHoldCounter({
@@ -705,6 +854,12 @@ function savePending() {
 /** ワークアウトを確定してレコードにする */
 function finishRun(sets = null) {
   const r = run;
+  // ウォームアップは記録しない（仕様書 2.2 / 5.6）
+  if (r.kind === 'warmup') {
+    stopRun();
+    go('home');
+    return;
+  }
   const list = sets ?? r.sets;
   if (list.length) {
     data.records.push({
@@ -1199,6 +1354,7 @@ const actions = {
 
   // ホーム
   open: (el) => startRun(el.dataset.ex),
+  warmup: () => startWarmup(),
   locked: (el) => {
     const ex = el.dataset.ex;
     const meta = L.getExercise(data, ex);
@@ -1282,6 +1438,15 @@ const actions = {
   },
   stop: () => {
     const r = run;
+    if (r.kind === 'warmup') {
+      // seconds() / reps() は停止すると 0 を返すため、stop() より先に読む
+      r.sets.push({ mode: r.mode, value: r.mode === 'time' ? r.counter.seconds() : r.counter.reps() });
+      r.counter.stop();
+      r.counter = null;
+      r.phase = 'rest'; // 種目実行と同じく、セットを終えたら休憩へ
+      render();
+      return;
+    }
     // 回りきったレップ数をそのまま既定値にする。押下が遅れて 1 多いときは
     // 確認画面で減らす（仕様書 5.5(e)）
     r.confirmValue = r.mode === 'hold' ? r.counter.seconds() : r.counter.reps();
@@ -1320,6 +1485,11 @@ const actions = {
     run.rest?.stop();
     run.rest = null;
     finishRun();
+  },
+  'warmup-mode': (el) => {
+    if (run.phase !== 'idle') return;
+    run.mode = el.dataset.mode;
+    render();
   },
   'add-set': () => {
     run.phase = 'idle';
