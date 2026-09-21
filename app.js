@@ -556,8 +556,10 @@ function runRest(r) {
   <div class="card">
     <div class="muted" style="text-align:center">休憩</div>
     <div class="rest-clock" id="rest-clock">00:00</div>
-    <button class="btn big block primary" data-act="rest-end">${hasMore ? '次のセットへ' : '完了画面へ'}</button>
-    ${r.sets.length > 0 ? `<button class="btn ghost small block" data-act="rest-finish">ここで終了</button>` : ''}
+    <div class="stack">
+      <button class="btn big block primary" data-act="rest-end">${hasMore ? '次のセットへ' : '完了画面へ'}</button>
+      ${r.sets.length > 0 ? `<button class="btn ghost small block" data-act="rest-finish">ここで終了</button>` : ''}
+    </div>
   </div>`;
 }
 
