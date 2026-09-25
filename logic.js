@@ -174,7 +174,7 @@ export function averageOf(record) {
 // ────────────────────────────────────────────────────────────
 
 /**
- * 現在ステップの履歴を先頭からたどり、級・当日目標・目標降格の回数を求める。
+ * 現在ステップの履歴を先頭からたどり、級・当日目標・初級での目標降格の回数を求める。
  *
  * 級の初期値（initialState.level）は下限として扱うが、それが効くのは
  * 「初期値のステップに在籍していて、まだ一度もステップを移動していない」間だけとする。
@@ -239,9 +239,12 @@ export function simulate(data, ex) {
       target = { sets: cap.sets ?? base.sets, value };
       prevFailed = false;
     } else if (prevFailed) {
-      // 直近 2 回連続で未達 → 前回実績の平均値まで目標を下げる
+      // 直近 2 回連続で未達 → 前回実績の平均値まで目標を下げる。
+      // 下げた目標で改めて 2 回続けて未達になるまでは再度下げない（数え直す）
       target = { sets: base.sets, value: averageOf(rec) };
-      demoteCount++;
+      // ステップ降格の提案に使うのは初級にいる間の目標降格だけ（仕様書 4.6）
+      if (level === 1) demoteCount++;
+      prevFailed = false;
     } else {
       target = { sets: base.sets, value: base.value };
       prevFailed = true;
@@ -287,12 +290,16 @@ export function promotionStatus(data, ex, today = toDateStr()) {
   return { count, need: s.promotionCount, weeks, needWeeks: s.minWeeksPerStep, ok };
 }
 
-/** 降格提案の判定（仕様書 4.6） */
+/**
+ * 降格提案の判定（仕様書 4.6）。
+ * 提案するのは初級にいる間だけ。初級を達成していればそのステップの動作はこなせており、
+ * 中級・上級での未達は目標の降格（4.1(c)）で吸収する。
+ */
 export function demotionStatus(data, ex) {
   const step = currentStep(data, ex);
-  const { demoteCount } = simulate(data, ex);
+  const { demoteCount, level } = simulate(data, ex);
   const need = data.settings.demoteThreshold;
-  return { count: demoteCount, need, ok: step > 1 && demoteCount >= need };
+  return { count: demoteCount, need, ok: step > 1 && level === 1 && demoteCount >= need };
 }
 
 /** 解禁判定（仕様書 4.3） */
