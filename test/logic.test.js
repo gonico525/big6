@@ -198,17 +198,64 @@ test('昇格提案は上級 4 回以上かつ 4 週以上で成立する', () =>
   assert.equal(L.promotionStatus(data, 'squat', '2026-07-23').ok, false);
 });
 
-test('降格提案は目標降格が 2 回で成立する', () => {
+test('(c) 目標を下げたあとは未達の連続を数え直し、次の未達は据え置く', () => {
   const data = makeData();
-  data.initialState.pushup = { step: 3, level: 2 };
-  const fails = ['2026-08-01', '2026-08-04', '2026-08-07', '2026-08-10'];
-  for (const d of fails) {
-    data.records.push(rec(d, 'pushup', 3, [10, 10], { sets: 2, value: 20 }, false));
-  }
-  // 2 回目・3 回目・4 回目の未達でそれぞれ目標が下がる
+  data.initialState.pushup = { step: 3, level: 3 }; // 上級 3×25
+  const T = { sets: 3, value: 25 };
+  data.records.push(rec('2026-08-01', 'pushup', 3, [20, 18, 16], T, false));
+  data.records.push(rec('2026-08-04', 'pushup', 3, [20, 18, 16], T, false));
+  assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 3, value: 18 });
+
+  // 降格直後の未達は据え置き
+  data.records.push(rec('2026-08-07', 'pushup', 3, [17, 16, 15], { sets: 3, value: 18 }, false));
+  assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 3, value: 18 });
+  assert.equal(L.demotionStatus(data, 'pushup').count, 0); // 上級での目標降格は数えない
+
+  // そこからさらに 2 回連続で未達になって初めて下げる
+  data.records.push(rec('2026-08-10', 'pushup', 3, [17, 16, 15], { sets: 3, value: 18 }, false));
+  assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 3, value: 16 });
+});
+
+test('降格提案は初級で目標降格が 2 回で成立する', () => {
+  const data = makeData();
+  data.initialState.pushup = { step: 3, level: 1 }; // 初級 1×30
+  const T = { sets: 1, value: 30 };
+  data.records.push(rec('2026-08-01', 'pushup', 3, [20], T, false));
+  data.records.push(rec('2026-08-04', 'pushup', 3, [20], T, false)); // 1 回目の目標降格 → 20
+  assert.equal(L.demotionStatus(data, 'pushup').ok, false);
+
+  data.records.push(rec('2026-08-07', 'pushup', 3, [15], { sets: 1, value: 20 }, false));
+  data.records.push(rec('2026-08-10', 'pushup', 3, [15], { sets: 1, value: 20 }, false)); // 2 回目
   const st = L.demotionStatus(data, 'pushup');
-  assert.equal(st.count >= 2, true);
+  assert.equal(st.count, 2);
   assert.equal(st.ok, true);
+});
+
+test('中級・上級では目標降格が重なっても降格提案を出さない', () => {
+  const data = makeData();
+  data.initialState.pushup = { step: 3, level: 1 };
+  // 初級で 1 回目標を下げる
+  data.records.push(rec('2026-08-01', 'pushup', 3, [20], { sets: 1, value: 30 }, false));
+  data.records.push(rec('2026-08-04', 'pushup', 3, [20], { sets: 1, value: 30 }, false));
+  // 初級・中級を達成して上級へ
+  data.records.push(rec('2026-08-07', 'pushup', 3, [30], { sets: 1, value: 30 }, true));
+  data.records.push(rec('2026-08-10', 'pushup', 3, [20, 20], { sets: 2, value: 20 }, true));
+  assert.equal(L.currentLevel(data, 'pushup'), 3);
+  // 上級で 2 回連続未達 → 目標は下がるが、ステップ降格は提案しない
+  for (const d of ['2026-08-13', '2026-08-16', '2026-08-19', '2026-08-22']) {
+    data.records.push(rec(d, 'pushup', 3, [10, 10, 10], { sets: 3, value: 13 }, false));
+  }
+  const st = L.demotionStatus(data, 'pushup');
+  assert.equal(st.count, 1); // 初級で下げた 1 回だけ
+  assert.equal(st.ok, false);
+
+  // 導入時に上級から始めた場合も同様
+  const d2 = makeData();
+  d2.initialState.pushup = { step: 3, level: 3 };
+  for (const d of ['2026-08-01', '2026-08-04', '2026-08-07', '2026-08-10', '2026-08-13', '2026-08-16']) {
+    d2.records.push(rec(d, 'pushup', 3, [10, 10, 10], { sets: 3, value: 25 }, false));
+  }
+  assert.equal(L.demotionStatus(d2, 'pushup').ok, false);
 });
 
 // ────────────────────────────────────────────────────────────
