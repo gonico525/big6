@@ -109,8 +109,19 @@ test('(b) 級の移行では前の級の総量を新しいセット数で割り�
   data.initialState.squat = { step: 2, level: 1 };
   // 初級 1×30 を達成
   data.records.push(rec('2026-08-01', 'squat', 2, [30], { sets: 1, value: 30 }, true));
-  assert.deepEqual(L.targetOfDay(data, 'squat'), { sets: 2, value: 15 }); // floor(30*1/2)
+  assert.deepEqual(L.targetOfDay(data, 'squat'), { sets: 2, value: 15 }); // ceil(30*1/2)
   assert.equal(L.currentLevel(data, 'squat'), 2);
+});
+
+test('(b) 割り切れない場合は切り上げ、総量を前の級より減らさない', () => {
+  const data = makeData();
+  for (const s of Object.values(data.steps.squat)) {
+    s.levels[1] = { sets: 1, value: 25 };
+    s.levels[2] = { sets: 2, value: 20 };
+  }
+  data.initialState.squat = { step: 2, level: 1 };
+  data.records.push(rec('2026-08-01', 'squat', 2, [25], { sets: 1, value: 25 }, true));
+  assert.deepEqual(L.targetOfDay(data, 'squat'), { sets: 2, value: 13 }); // ceil(25*1/2)
 });
 
 test('(b) 算出値が新しい級の基準値を超える場合はクランプする', () => {
