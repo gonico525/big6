@@ -217,10 +217,10 @@ export function simulate(data, ex) {
     const nextLevel = met >= 1 ? Math.min(3, met + 1) : level;
 
     if (met >= level && nextLevel > level && isLevelFilled(std, nextLevel)) {
-      // (b) 級の移行：前の級の総量を新しいセット数で割り直す
+      // (b) 級の移行：前の級の総量を新しいセット数で割り直す（切り上げ。総量を減らさない）
       const prev = std.levels[met];
       const next = std.levels[nextLevel];
-      let value = Math.max(1, Math.floor((prev.value * prev.sets) / next.sets));
+      let value = Math.max(1, Math.ceil((prev.value * prev.sets) / next.sets));
       if (value > next.value) value = next.value; // 入力ミスに対する保険（仕様書 4.1(b)）
       target = { sets: next.sets, value };
       level = nextLevel;
