@@ -261,10 +261,14 @@ function pendingBanner() {
   const p = data.pending;
   const meta = L.getExercise(data, p.exercise);
   const done = p.sets.length;
+  // 片側種目で左だけ終えたセットは sets に入らず partial に残る
+  const parts = [];
+  if (done) parts.push(`${done}セット目 ${L.setsText([p.sets[done - 1]], p.perSide)} まで完了`);
+  if (p.partial != null) parts.push(`${done + 1}セット目は左 ${p.partial} まで`);
   return `<div class="banner">
     <div><b>${esc(p.date)} ${esc(meta?.name ?? p.exercise)} の記録が途中です</b></div>
     <div class="small muted" style="margin:4px 0 10px">
-      ${done ? `${done}セット目 ${esc(L.setsText([p.sets[done - 1]], p.perSide))} まで完了` : 'まだセットの記録はありません'}
+      ${parts.length ? esc(parts.join('・')) : 'まだセットの記録はありません'}
     </div>
     <div class="row wrap">
       <button class="btn small primary" data-act="pending-resume">続きから</button>
