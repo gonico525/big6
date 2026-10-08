@@ -156,6 +156,23 @@ test('(c) 1 回の未達では据え置き、2 回連続で平均まで下げる
   assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 2, value: 14 }); // floor((15+14)/2)
 });
 
+test('(c) 目標セット数を超えて行ったセットは平均に含めない', () => {
+  const data = makeData();
+  data.initialState.pushup = { step: 3, level: 1 };
+  data.records.push(rec('2026-08-01', 'pushup', 3, [8], { sets: 1, value: 10 }, false));
+  // 1 セット目 8、足りない分を 2 セット目で 2 回 → 平均は良い方の 1 セットの 8（(8+2)/2=5 ではない）
+  data.records.push(rec('2026-08-04', 'pushup', 3, [8, 2], { sets: 1, value: 10 }, false));
+  assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 1, value: 8 });
+});
+
+test('(c) 目標セット数に満たない場合は行ったセットだけで平均する', () => {
+  const data = makeData();
+  data.initialState.pushup = { step: 3, level: 2 };
+  data.records.push(rec('2026-08-01', 'pushup', 3, [18, 16], { sets: 2, value: 20 }, false));
+  data.records.push(rec('2026-08-04', 'pushup', 3, [15], { sets: 2, value: 20 }, false));
+  assert.deepEqual(L.targetOfDay(data, 'pushup'), { sets: 2, value: 15 });
+});
+
 test('秒数系は secIncrement で増える', () => {
   const data = makeData();
   for (const s of Object.values(data.steps.bridge)) {

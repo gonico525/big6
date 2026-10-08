@@ -162,11 +162,16 @@ export function levelMetBy(record, std) {
   return 0;
 }
 
-/** セット実績の平均（目標の降格に使う）。片側種目は弱い側の平均 */
-export function averageOf(record) {
+/**
+ * セット実績の平均（目標の降格に使う）。片側種目は弱い側の平均。
+ * 目標セット数を超えて行ったセットは、良い方から目標セット数ぶんだけを数える。
+ * 足りない回数を追加セットで補った場合に、その小さな値で平均が下がらないようにするため。
+ */
+export function averageOf(record, sets = record.sets.length) {
   if (!record.sets.length) return 0;
-  const sum = record.sets.reduce((a, s) => a + effectiveValue(s), 0);
-  return Math.max(1, Math.floor(sum / record.sets.length));
+  const values = record.sets.map(effectiveValue).sort((a, b) => b - a).slice(0, Math.max(1, sets));
+  const sum = values.reduce((a, v) => a + v, 0);
+  return Math.max(1, Math.floor(sum / values.length));
 }
 
 // ────────────────────────────────────────────────────────────
@@ -241,7 +246,7 @@ export function simulate(data, ex) {
     } else if (prevFailed) {
       // 直近 2 回連続で未達 → 前回実績の平均値まで目標を下げる。
       // 下げた目標で改めて 2 回続けて未達になるまでは再度下げない（数え直す）
-      target = { sets: base.sets, value: averageOf(rec) };
+      target = { sets: base.sets, value: averageOf(rec, base.sets) };
       // ステップ降格の提案に使うのは初級にいる間の目標降格だけ（仕様書 4.6）
       if (level === 1) demoteCount++;
       prevFailed = false;
