@@ -352,6 +352,13 @@ export function dailyExerciseCounts(data, from, to) {
   return out;
 }
 
+/** その日の記録。種目の並び順（data.exercises）、同じ種目は記録順 */
+export function recordsOn(data, date) {
+  const order = new Map(data.exercises.map((e, i) => [e.id, i]));
+  const rank = (r) => order.get(r.exercise) ?? order.size;
+  return sortRecords(data.records.filter((r) => r.date === date)).sort((a, b) => rank(a) - rank(b));
+}
+
 /** 'YYYY-MM' を月単位でずらす */
 export function shiftMonth(yearMonth, delta) {
   const [y, m] = yearMonth.split('-').map(Number);
