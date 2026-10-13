@@ -421,6 +421,22 @@ test('日毎の実施種目数は同日の同種目を重複カウントしな�
   });
 });
 
+test('日付の記録は種目の並び順、同じ種目は記録順で返す（5.3(a)）', () => {
+  const data = makeData({
+    records: [
+      { ...rec('2026-08-12', 'squat', 2, [30], { sets: 1, value: 30 }, true), id: '2026-08-12-squat-1' },
+      { ...rec('2026-08-12', 'pushup', 3, [10, 10], { sets: 2, value: 20 }, false), id: '2026-08-12-pushup-2' },
+      { ...rec('2026-08-12', 'pushup', 3, [20, 20], { sets: 2, value: 20 }, true), id: '2026-08-12-pushup-1' },
+      rec('2026-08-13', 'pullup', 1, [5], { sets: 1, value: 5 }, true),
+    ],
+  });
+  assert.deepEqual(
+    L.recordsOn(data, '2026-08-12').map((r) => r.id),
+    ['2026-08-12-pushup-1', '2026-08-12-pushup-2', '2026-08-12-squat-1']
+  );
+  assert.deepEqual(L.recordsOn(data, '2026-08-14'), []);
+});
+
 test('月のずらしは年をまたぐ', () => {
   assert.equal(L.shiftMonth('2026-08', 1), '2026-09');
   assert.equal(L.shiftMonth('2026-01', -1), '2025-12');

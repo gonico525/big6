@@ -902,7 +902,8 @@ function renderProgress() {
     })
     .join('');
 
-  const sel = view.ex ? historyPanel(view.ex, view.step) : '';
+  // 下に出すパネルは 1 つだけ。日付を選んでいればその日、マスを選んでいればそのステップ
+  const sel = view.date ? dayPanel(view.date) : view.ex ? historyPanel(view.ex, view.step) : '';
 
   return `
   ${pageHeader('進捗')}
@@ -945,12 +946,13 @@ function renderCalendar(month, today) {
     .map((week) =>
       week
         .map((date) => {
-          if (!date) return `<div class="cal-cell empty"></div>`;
+          if (!date) return `<div class="cal-cell blank"></div>`;
           const n = counts[date] ?? 0;
-          return `<div class="cal-cell${date > today ? ' future' : ''}" data-level="${calLevel(n)}" data-today="${date === today}"
-            title="${date}　${n}種目">
-            <span class="d">${Number(date.slice(8))}</span>${n ? `<span class="n">${n}</span>` : ''}
-          </div>`;
+          const inner = `<span class="d">${Number(date.slice(8))}</span>${n ? `<span class="n">${n}</span>` : ''}`;
+          const attrs = `data-level="${calLevel(n)}" data-today="${date === today}" title="${date}　${n}種目"`;
+          // 未来の日付には記録がないのでタップできなくする
+          if (date > today) return `<div class="cal-cell future" ${attrs}>${inner}</div>`;
+          return `<button class="cal-cell" data-act="cal-day" data-date="${date}" data-selected="${date === view.date}" ${attrs}>${inner}</button>`;
         })
         .join('')
     )
@@ -971,6 +973,24 @@ function renderCalendar(month, today) {
       <span><i style="background:var(--lv3)"></i>5〜6種目</span>
     </div>
     <div class="grid-hint small muted">毎日やる必要はありません。週の中でどれだけ実施できたかの目安です</div>
+    <div class="grid-hint small muted">日付をタップすると、その日の記録が下に出ます</div>
+  </div>`;
+}
+
+/** その日の記録（全種目）。記録がない日も責める表現にしない（仕様書 5.3(a)） */
+function dayPanel(date) {
+  const recs = L.recordsOn(data, date);
+  const [, m, d] = date.split('-').map(Number);
+  const wd = WEEKDAYS[(new Date(`${date}T00:00:00`).getDay() + 6) % 7][1];
+  const rows = recs.length
+    ? recs.map((r) => historyRow(r, true)).join('')
+    : `<div class="empty">この日の記録はありません</div>`;
+  return `<div class="card">
+    <div class="row between" style="margin-bottom:8px">
+      <b>${m}月${d}日（${wd}）</b>
+      ${recs.length ? `<span class="small muted">${L.dailyExerciseCounts(data, date, date)[date]}種目</span>` : ''}
+    </div>
+    ${rows}
   </div>`;
 }
 
@@ -990,12 +1010,17 @@ function historyPanel(ex, step) {
   </div>`;
 }
 
-function historyRow(r) {
+/** byDate: 日付ごとの一覧では日付の代わりに種目名とステップを出す */
+function historyRow(r, byDate = false) {
   // 実績は各セットの値を並べるだけにする。行頭にセット数を置くと、
   // 「2×30」で1セット分の目標を表しているように読め、続く実績値と二重に見えるため
-  return `<button class="hist-row" data-act="edit-record" data-id="${esc(r.id)}">
+  const head = byDate
+    ? `<div class="line0">${esc(L.getExercise(data, r.exercise)?.name ?? r.exercise)}　Step${esc(r.step)}</div>`
+    : '';
+  return `<button class="hist-row${byDate ? ' by-date' : ''}" data-act="edit-record" data-id="${esc(r.id)}">
+    ${head}
     <div class="line1">
-      <span class="date">${esc(r.date.slice(5).replace('-', '/'))}</span>
+      ${byDate ? '' : `<span class="date">${esc(r.date.slice(5).replace('-', '/'))}</span>`}
       <span class="sets">${esc(L.setsText(r.sets, r.perSide))}</span>
       <span class="judge ${r.achieved ? 'ok' : 'ng'}">${r.achieved ? '達成' : '未達'}</span>
     </div>
@@ -1503,7 +1528,11 @@ const actions = {
 
   // 進捗
   cell: (el) => {
-    view = { ...view, name: 'progress', ex: el.dataset.ex, step: num(el.dataset.step, 1) };
+    view = { ...view, name: 'progress', ex: el.dataset.ex, step: num(el.dataset.step, 1), date: null };
+    render();
+  },
+  'cal-day': (el) => {
+    view = { ...view, date: el.dataset.date, ex: null, step: null };
     render();
   },
   'cal-prev': () => {
@@ -1518,7 +1547,8 @@ const actions = {
     const ex = view.ex ?? data.exercises[0].id;
     const step = view.step ?? L.currentStep(data, ex);
     const target = L.targetOfDay(data, ex) ?? { sets: null, value: null };
-    openModal(recordForm({ date: L.toDateStr(), exercise: ex, step, sets: [], targetOfDay: target }));
+    // 日付を選んでいれば、その日の記録として追加する（実施し忘れた日の入力）
+    openModal(recordForm({ date: view.date ?? L.toDateStr(), exercise: ex, step, sets: [], targetOfDay: target }));
   },
   'edit-record': (el) => {
     const rec = data.records.find((r) => r.id === el.dataset.id);
